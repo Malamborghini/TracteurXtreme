@@ -16,6 +16,7 @@ namespace TracteurXtreme
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static readonly int VITESSE_TRACTEUR = 5;
         public MainWindow()
         {
             InitializeComponent();
@@ -25,6 +26,30 @@ namespace TracteurXtreme
         {
             this.Owner.Show();
             this.Hide();
+        }
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            double xDeplacement = Canvas.GetLeft(rectTracteur);
+            double yDeplacement = Canvas.GetTop(rectTracteur);
+
+            switch (e.Key)
+            {
+                case Key.Up:
+                    yDeplacement = yDeplacement - VITESSE_TRACTEUR;
+                    break;
+                case Key.Left:
+                    xDeplacement = xDeplacement - VITESSE_TRACTEUR;
+                    break;
+                case Key.Right:
+                    xDeplacement = xDeplacement + VITESSE_TRACTEUR;
+                    break;
+                case Key.Down:
+                    yDeplacement = yDeplacement + VITESSE_TRACTEUR;
+                    break;
+            }
+
+            Canvas.SetLeft(rectTracteur, xDeplacement);
+            Canvas.SetTop(rectTracteur, yDeplacement);
         }
     }
 }

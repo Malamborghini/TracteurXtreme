@@ -6,8 +6,14 @@
         xmlns:local="clr-namespace:TracteurXtreme"
         mc:Ignorable="d"
         Title="MainWindow" Height="540" Width="960"
-        WindowState="Maximized">
+        WindowState="Maximized"
+        KeyDown="Window_KeyDown">
     <Canvas Background="#FF9A5322">
         <Button Content="retour au menu" Canvas.Left="52" Canvas.Top="31" Click="Button_Click"/>
+        <Rectangle x:Name="rectTracteur" Height="50" Canvas.Left="95" Canvas.Top="166" Width="50">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/img/tracteur_vert.png"/>
+            </Rectangle.Fill>
+        </Rectangle>
     </Canvas>
 </Window>

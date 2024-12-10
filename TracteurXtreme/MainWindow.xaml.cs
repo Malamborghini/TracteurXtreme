@@ -20,16 +20,19 @@ namespace TracteurXtreme
         public static readonly int VITESSE_TRACTEUR = 5;
         public Rect tracteurHitbox;
         public Rect murHitbox;
+        public MenuPrincipal menuPrincipal;
         public MainWindow()
         {
             InitializeComponent();
+
+            menuPrincipal = new MenuPrincipal();
+            menuPrincipal.ShowDialog();
 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Owner.Show();
-            this.Hide();
+            menuPrincipal.ShowDialog();
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {

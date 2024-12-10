@@ -9,7 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="img\" />
+    <None Remove="img\race_tracteur.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="img\race_tracteur.png" />
   </ItemGroup>
 
 </Project>

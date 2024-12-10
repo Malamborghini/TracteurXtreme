@@ -18,6 +18,7 @@ namespace TracteurXtreme
     public partial class MainWindow : Window
     {
         public static readonly int VITESSE_TRACTEUR = 5;
+        public static bool gauche, droite, haut, bas;
         public Rect tracteurHitbox;
         public Rect murHitbox;
         public MenuPrincipal menuPrincipal;
@@ -34,38 +35,44 @@ namespace TracteurXtreme
         {
             menuPrincipal.ShowDialog();
         }
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            double xDeplacement = Canvas.GetLeft(rectTracteur);
-            double yDeplacement = Canvas.GetTop(rectTracteur);
-            
-            if (e.Key == Key.Left)
-            {
-                xDeplacement = xDeplacement - VITESSE_TRACTEUR;
-            }
-            else if (e.Key == Key.Right)
-            {
-                xDeplacement = xDeplacement + VITESSE_TRACTEUR;
-            }
-            if (xDeplacement >= 0 && xDeplacement <= canvasPiste.ActualWidth - rectTracteur.Width)
-            {
-                Canvas.SetLeft(rectTracteur, xDeplacement);
-            }
-
-            if (e.Key == Key.Down)
-            {
-                yDeplacement = yDeplacement + VITESSE_TRACTEUR;
-            }
-            if (e.Key == Key.Up)
-            {
-                yDeplacement = yDeplacement - VITESSE_TRACTEUR;
-            }
-            if (yDeplacement >= 0 && yDeplacement <= canvasPiste.ActualHeight - rectTracteur.Width)
-            {
-                Canvas.SetTop(rectTracteur, yDeplacement);
-            }
+            if (e.Key == Key.Left) { gauche = true; }
+            if (e.Key == Key.Right) { droite = true; }
+            if (e.Key == Key.Up) { haut = true; }
+            if (e.Key == Key.Down) { bas = true; }
+            DeplacerTracteur();
             
         }
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Left) { gauche = false; }
+            if (e.Key == Key.Right) { droite = false; }
+            if (e.Key == Key.Up) { haut = false; }
+            if (e.Key == Key.Down) { bas = false; }           
+        }
+        private void DeplacerTracteur()
+        {
+            double posX = Canvas.GetLeft(rectTracteur);
+            double posY = Canvas.GetTop(rectTracteur);
+
+            if (gauche && !droite) { posX -= VITESSE_TRACTEUR; }
+            else if (!gauche && droite) { posX += VITESSE_TRACTEUR; }
+            if (haut && !bas) { posY -= VITESSE_TRACTEUR; }
+            else if (!haut && bas) { posY += VITESSE_TRACTEUR; }
+            //Canvas.SetLeft(rectTracteur, posX);
+            //Canvas.SetTop(rectTracteur, posY);
+
+            if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width)
+            { Canvas.SetLeft(rectTracteur, posX); }
+            if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width)
+            { Canvas.SetTop(rectTracteur, posY); }
+
+        }
+
+
+
         private void Collision()
         {
             tracteurHitbox = new Rect(Canvas.GetLeft(rectTracteur), Canvas.GetTop(rectTracteur), rectTracteur.Width, rectTracteur.Height);

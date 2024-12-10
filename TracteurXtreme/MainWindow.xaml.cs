@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,53 +20,48 @@ namespace TracteurXtreme
         public static readonly int VITESSE_TRACTEUR = 5;
         public Rect tracteurHitbox;
         public Rect murHitbox;
-        MenuPrincipal menuPrincipal;
-        public static int niveau {  get; set; }
         public MainWindow()
         {
             InitializeComponent();
 
-            menuPrincipal = new MenuPrincipal();
-            menuPrincipal.ShowDialog();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            menuPrincipal = new MenuPrincipal();
-            menuPrincipal.Owner = this;
-            menuPrincipal.Show();
-            //this.Hide();
+            this.Owner.Show();
+            this.Hide();
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             double xDeplacement = Canvas.GetLeft(rectTracteur);
             double yDeplacement = Canvas.GetTop(rectTracteur);
-            if (e.Key == Key.Up)
-            {
-                yDeplacement = yDeplacement - VITESSE_TRACTEUR;
-            }
+            
             if (e.Key == Key.Left)
             {
                 xDeplacement = xDeplacement - VITESSE_TRACTEUR;
             }
-            if (e.Key == Key.Right)
+            else if (e.Key == Key.Right)
             {
                 xDeplacement = xDeplacement + VITESSE_TRACTEUR;
-            }
-            if (e.Key == Key.Down)
-            {
-                yDeplacement = yDeplacement + VITESSE_TRACTEUR;
-            }
-
-
-            if (yDeplacement >= 0 && yDeplacement <= canvasPiste.ActualHeight - rectTracteur.Width)
-            {
-                Canvas.SetTop(rectTracteur, yDeplacement);
             }
             if (xDeplacement >= 0 && xDeplacement <= canvasPiste.ActualWidth - rectTracteur.Width)
             {
                 Canvas.SetLeft(rectTracteur, xDeplacement);
             }
+
+            if (e.Key == Key.Down)
+            {
+                yDeplacement = yDeplacement + VITESSE_TRACTEUR;
+            }
+            if (e.Key == Key.Up)
+            {
+                yDeplacement = yDeplacement - VITESSE_TRACTEUR;
+            }
+            if (yDeplacement >= 0 && yDeplacement <= canvasPiste.ActualHeight - rectTracteur.Width)
+            {
+                Canvas.SetTop(rectTracteur, yDeplacement);
+            }
+            
         }
         private void Collision()
         {

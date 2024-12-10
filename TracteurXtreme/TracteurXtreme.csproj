@@ -15,8 +15,36 @@
     <None Remove="img\backPageAceuil.png" />
     <None Remove="img\circuit1.png" />
     <None Remove="img\circuit3.png" />
+    <None Remove="img\imgTracteurs\bas\tracteurBleu_bas.png" />
+    <None Remove="img\imgTracteurs\bas\tracteurJaune_bas.png" />
+    <None Remove="img\imgTracteurs\bas\tracteurNoirJoueur_bas.png" />
+    <None Remove="img\imgTracteurs\bas\tracteurOrange_bas.png" />
+    <None Remove="img\imgTracteurs\bas\tracteurRouge_bas.png" />
+    <None Remove="img\imgTracteurs\bas\tracteurVert_bas.png" />
+    <None Remove="img\imgTracteurs\droite\tracteurBleu_droite.png" />
+    <None Remove="img\imgTracteurs\droite\tracteurJaune_droite.png" />
+    <None Remove="img\imgTracteurs\droite\tracteurNoirJoueur_droite.png" />
+    <None Remove="img\imgTracteurs\droite\tracteurOrange_droite.png" />
+    <None Remove="img\imgTracteurs\droite\tracteurRouge_droite.png" />
+    <None Remove="img\imgTracteurs\droite\tracteurVert_droite.png" />
+    <None Remove="img\imgTracteurs\gauche\tracteurBleu_gauche.png" />
+    <None Remove="img\imgTracteurs\gauche\tracteurJaune_gauche.png" />
+    <None Remove="img\imgTracteurs\gauche\tracteurNoirJoueur_gauche.png" />
+    <None Remove="img\imgTracteurs\gauche\tracteurOrange_gauche.png" />
+    <None Remove="img\imgTracteurs\gauche\tracteurRouge_gauche.png" />
+    <None Remove="img\imgTracteurs\gauche\tracteurVert_gauche.png" />
+    <None Remove="img\imgTracteurs\haut\tracteurBleu_haut.png" />
+    <None Remove="img\imgTracteurs\haut\tracteurJaune_haut.png" />
+    <None Remove="img\imgTracteurs\haut\tracteurNoirJoueur_haut.png" />
+    <None Remove="img\imgTracteurs\haut\tracteurOrange_haut.png" />
+    <None Remove="img\imgTracteurs\haut\tracteurRouge_haut.png" />
+    <None Remove="img\imgTracteurs\haut\tracteurVert_haut.png" />
     <None Remove="img\race_tracteur.png" />
     <None Remove="img\tracteur_vert.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="MenuPrincipal.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,8 +54,33 @@
     <Resource Include="img\backPageAceuil.png" />
     <Resource Include="img\circuit1.png" />
     <Resource Include="img\circuit3.png" />
+    <Resource Include="img\imgTracteurs\bas\tracteurBleu_bas.png" />
+    <Resource Include="img\imgTracteurs\bas\tracteurJaune_bas.png" />
+    <Resource Include="img\imgTracteurs\bas\tracteurNoirJoueur_bas.png" />
+    <Resource Include="img\imgTracteurs\bas\tracteurOrange_bas.png" />
+    <Resource Include="img\imgTracteurs\bas\tracteurRouge_bas.png" />
+    <Resource Include="img\imgTracteurs\bas\tracteurVert_bas.png" />
+    <Resource Include="img\imgTracteurs\droite\tracteurBleu_droite.png" />
+    <Resource Include="img\imgTracteurs\droite\tracteurJaune_droite.png" />
+    <Resource Include="img\imgTracteurs\droite\tracteurNoirJoueur_droite.png" />
+    <Resource Include="img\imgTracteurs\droite\tracteurOrange_droite.png" />
+    <Resource Include="img\imgTracteurs\droite\tracteurRouge_droite.png" />
+    <Resource Include="img\imgTracteurs\droite\tracteurVert_droite.png" />
+    <Resource Include="img\imgTracteurs\gauche\tracteurBleu_gauche.png" />
+    <Resource Include="img\imgTracteurs\gauche\tracteurJaune_gauche.png" />
+    <Resource Include="img\imgTracteurs\gauche\tracteurNoirJoueur_gauche.png" />
+    <Resource Include="img\imgTracteurs\gauche\tracteurOrange_gauche.png" />
+    <Resource Include="img\imgTracteurs\gauche\tracteurRouge_gauche.png" />
+    <Resource Include="img\imgTracteurs\gauche\tracteurVert_gauche.png" />
+    <Resource Include="img\imgTracteurs\haut\tracteurBleu_haut.png" />
+    <Resource Include="img\imgTracteurs\haut\tracteurJaune_haut.png" />
+    <Resource Include="img\imgTracteurs\haut\tracteurNoirJoueur_haut.png" />
+    <Resource Include="img\imgTracteurs\haut\tracteurOrange_haut.png" />
+    <Resource Include="img\imgTracteurs\haut\tracteurRouge_haut.png" />
+    <Resource Include="img\imgTracteurs\haut\tracteurVert_haut.png" />
     <Resource Include="img\race_tracteur.png" />
     <Resource Include="img\tracteur_vert.png" />
+    <Resource Include="MenuPrincipal.xaml" />
   </ItemGroup>
 
 </Project>

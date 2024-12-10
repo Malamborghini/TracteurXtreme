@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TracteurXtreme"
         mc:Ignorable="d"
-        Title="MainWindow" Height="540" Width="960">
-    <Grid>
-
-    </Grid>
+        Title="MainWindow" Height="540" Width="960"
+        WindowState="Maximized">
+    <Canvas Background="#FF9A5322">
+        <Button Content="retour au menu" Canvas.Left="52" Canvas.Top="31" Click="Button_Click"/>
+    </Canvas>
 </Window>

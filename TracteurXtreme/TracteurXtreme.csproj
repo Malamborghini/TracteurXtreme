@@ -9,11 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="img\backcircuit1.png" />
+    <None Remove="img\backCircuit2.png" />
+    <None Remove="img\backCircuit3.png" />
+    <None Remove="img\backPageAceuil.png" />
+    <None Remove="img\circuit1.png" />
+    <None Remove="img\circuit3.png" />
     <None Remove="img\race_tracteur.png" />
+    <None Remove="img\tracteur_vert.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="img\backcircuit1.png" />
+    <Resource Include="img\backCircuit2.png" />
+    <Resource Include="img\backCircuit3.png" />
+    <Resource Include="img\backPageAceuil.png" />
+    <Resource Include="img\circuit1.png" />
+    <Resource Include="img\circuit3.png" />
     <Resource Include="img\race_tracteur.png" />
+    <Resource Include="img\tracteur_vert.png" />
   </ItemGroup>
 
 </Project>

@@ -18,10 +18,11 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="6*"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="1.5*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Content=" Jouer Multijoueur " HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="24" FontFamily="Broadway" Margin="0,320,400,0">
+
+        <Button Grid.Column="0" Grid.Row="1" Content=" Jouer Multijoueur " Foreground="White" FontSize="24" FontFamily="Broadway" Margin="150,0,0,0">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFD61414" Offset="0.46"/>
@@ -29,7 +30,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button Content=" Jouer Solo " HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="24" FontFamily="Broadway" Margin="600,320,0,0" Click="Button_Click">
+        <Button Grid.Column="2" Grid.Row="1" Content=" Jouer Solo " Foreground="White" FontSize="24" FontFamily="Broadway" Click="Button_Click" Margin="0,0,150,0">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFD61414" Offset="0.46"/>

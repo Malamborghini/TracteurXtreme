@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Policy;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -34,32 +35,33 @@ namespace TracteurXtreme
         {
             double xDeplacement = Canvas.GetLeft(rectTracteur);
             double yDeplacement = Canvas.GetTop(rectTracteur);
-            if (e.Key == Key.Up)
-            {
-                yDeplacement = yDeplacement - VITESSE_TRACTEUR;
-            }
+            
             if (e.Key == Key.Left)
             {
                 xDeplacement = xDeplacement - VITESSE_TRACTEUR;
             }
-            if (e.Key == Key.Right)
+            else if (e.Key == Key.Right)
             {
                 xDeplacement = xDeplacement + VITESSE_TRACTEUR;
-            }
-            if (e.Key == Key.Down)
-            {
-                yDeplacement = yDeplacement + VITESSE_TRACTEUR;
-            }
-
-
-            if (yDeplacement >= 0 && yDeplacement <= canvasPiste.ActualHeight - rectTracteur.Width)
-            {
-                Canvas.SetTop(rectTracteur, yDeplacement);
             }
             if (xDeplacement >= 0 && xDeplacement <= canvasPiste.ActualWidth - rectTracteur.Width)
             {
                 Canvas.SetLeft(rectTracteur, xDeplacement);
             }
+
+            if (e.Key == Key.Down)
+            {
+                yDeplacement = yDeplacement + VITESSE_TRACTEUR;
+            }
+            if (e.Key == Key.Up)
+            {
+                yDeplacement = yDeplacement - VITESSE_TRACTEUR;
+            }
+            if (yDeplacement >= 0 && yDeplacement <= canvasPiste.ActualHeight - rectTracteur.Width)
+            {
+                Canvas.SetTop(rectTracteur, yDeplacement);
+            }
+            
         }
         private void Collision()
         {

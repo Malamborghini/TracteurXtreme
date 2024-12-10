@@ -8,12 +8,16 @@
         Title="MainWindow" Height="540" Width="960"
         WindowState="Maximized"
         KeyDown="Window_KeyDown">
-    <Canvas x:Name="canvasPiste" Background="#FF9A5322">
+    <Canvas x:Name="canvasPiste">
+        <Canvas.Background>
+            <ImageBrush ImageSource="/img/backcircuit1.png"/>
+        </Canvas.Background>
         <Button Content="retour au menu" Canvas.Left="52" Canvas.Top="31" Click="Button_Click"/>
-        <Rectangle x:Name="rectTracteur" Height="50" Canvas.Left="95" Canvas.Top="166" Width="50">
+        <Rectangle x:Name="rectTracteur" Height="50" Canvas.Left="95" Canvas.Top="166" Width="60">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="/img/tracteur_vert.png"/>
             </Rectangle.Fill>
         </Rectangle>
+        <Rectangle x:Name="murTest" Height="199" Canvas.Left="559" Stroke="Black" Canvas.Top="116" Width="79" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Canvas>
 </Window>

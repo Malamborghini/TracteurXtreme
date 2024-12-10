@@ -17,9 +17,12 @@ namespace TracteurXtreme
     public partial class MainWindow : Window
     {
         public static readonly int VITESSE_TRACTEUR = 5;
+        public Rect tracteurHitbox;
+        public Rect murHitbox;
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -53,6 +56,15 @@ namespace TracteurXtreme
             if (xDeplacement >= 0 && xDeplacement <= canvasPiste.ActualWidth - rectTracteur.Width)
             {
                 Canvas.SetLeft(rectTracteur, xDeplacement);
+            }
+        }
+        private void Collision()
+        {
+            tracteurHitbox = new Rect(Canvas.GetLeft(rectTracteur), Canvas.GetTop(rectTracteur), rectTracteur.Width, rectTracteur.Height);
+            murHitbox = new Rect(Canvas.GetLeft(murTest), Canvas.GetTop(murTest), murTest.Width, murTest.Height);
+            if (tracteurHitbox.IntersectsWith(murHitbox))
+            {
+                //vaDroite = false;
             }
         }
     }

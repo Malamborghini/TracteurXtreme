@@ -14,11 +14,19 @@
             <ImageBrush ImageSource="/img/backcircuit1.png"/>
         </Canvas.Background>
         <Button Content="retour au menu" Canvas.Left="52" Canvas.Top="31" Click="Button_Click"/>
-        <Rectangle x:Name="rectTracteur" Height="50" Canvas.Left="95" Canvas.Top="166" Width="60">
+        <Rectangle x:Name="rectTracteur" Height="50" Canvas.Left="95" Canvas.Top="166" Width="70">
             <Rectangle.Fill>
-                <ImageBrush ImageSource="/img/tracteur_vert.png"/>
+                <ImageBrush ImageSource="/img/imgTracteurs/gauche/tracteurNoirJoueur_gauche.png"/>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="murTest" Height="199" Canvas.Left="559" Stroke="Black" Canvas.Top="116" Width="79" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Rectangle x:Name="murTest" Height="200" Stroke="Black"  Width="80" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="258" Canvas.Top="131"/>
+        <Label Name="labPauseJeu" Content="" FontFamily="Arial Black" FontSize="36" Foreground="#FF52BFFF" 
+               HorizontalAlignment="Right" VerticalAlignment="Bottom"
+               Canvas.Top="0" Canvas.Right="0" Margin="0,15,20,0">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
     </Canvas>
 </Window>

@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace TracteurXtreme
 {
@@ -22,13 +23,27 @@ namespace TracteurXtreme
         public Rect tracteurHitbox;
         public Rect murHitbox;
         public MenuPrincipal menuPrincipal;
+        public DispatcherTimer minuterie;
         public MainWindow()
         {
             InitializeComponent();
+            InitTimer();
 
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
 
+        }
+        private void InitTimer()
+        {
+            minuterie = new DispatcherTimer();
+            minuterie.Interval = TimeSpan.FromMilliseconds(16);
+            minuterie.Tick += Jeu;
+            minuterie.Start();
+        }
+
+        private void Jeu(object? sender, EventArgs e)
+        {
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -42,7 +57,19 @@ namespace TracteurXtreme
             if (e.Key == Key.Right) { droite = true; } // flèche droite pressée
             if (e.Key == Key.Up) { haut = true; } // flèche haut pressée
             if (e.Key == Key.Down) { bas = true; } // flèche bas pressée
-            DeplacerTracteur(); // appel de la méthode pour les déplacements            
+            DeplacerTracteur(); // appel de la méthode pour les déplacements
+
+            //mettre en pause
+            if (e.Key == Key.Space)
+            {
+                if (minuterie.IsEnabled) { minuterie.Stop(); }
+                else { minuterie.Start(); }
+            }
+            if (!minuterie.IsEnabled)
+            {
+                labPauseJeu.Content = "Pause";
+            }
+            else { labPauseJeu.Content = ""; }
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
@@ -63,10 +90,14 @@ namespace TracteurXtreme
             else if (!haut && bas) { posY += VITESSE_TRACTEUR; } // si bas pressée et non haut, déplacement en bas
 
             // met à jour les positions X et Y
-            if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width) // vérifie si X n'est pas hors largeur du canvas
-            { Canvas.SetLeft(rectTracteur, posX); } 
-            if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width) // vérifie si Y n'est pas hors hauteur du canvas
-            { Canvas.SetTop(rectTracteur, posY); }
+            if (minuterie.IsEnabled)
+            {
+                if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width) // vérifie si X n'est pas hors largeur du canvas
+                { Canvas.SetLeft(rectTracteur, posX); }
+                if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width) // vérifie si Y n'est pas hors hauteur du canvas
+                { Canvas.SetTop(rectTracteur, posY); }
+            }
+                
         }
 
         private void Collision()

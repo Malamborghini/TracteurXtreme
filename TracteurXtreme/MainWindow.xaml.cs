@@ -34,21 +34,24 @@ namespace TracteurXtreme
         {
             double xDeplacement = Canvas.GetLeft(rectTracteur);
             double yDeplacement = Canvas.GetTop(rectTracteur);
-            switch (e.Key)
+            if (e.Key == Key.Up)
             {
-                case Key.Up:
-                    yDeplacement = yDeplacement - VITESSE_TRACTEUR;
-                    break;
-                case Key.Left:
-                    xDeplacement = xDeplacement - VITESSE_TRACTEUR;
-                    break;
-                case Key.Right:
-                    xDeplacement = xDeplacement + VITESSE_TRACTEUR;
-                    break;
-                case Key.Down:
-                    yDeplacement = yDeplacement + VITESSE_TRACTEUR;
-                    break;
+                yDeplacement = yDeplacement - VITESSE_TRACTEUR;
             }
+            if (e.Key == Key.Left)
+            {
+                xDeplacement = xDeplacement - VITESSE_TRACTEUR;
+            }
+            if (e.Key == Key.Right)
+            {
+                xDeplacement = xDeplacement + VITESSE_TRACTEUR;
+            }
+            if (e.Key == Key.Down)
+            {
+                yDeplacement = yDeplacement + VITESSE_TRACTEUR;
+            }
+
+
             if (yDeplacement >= 0 && yDeplacement <= canvasPiste.ActualHeight - rectTracteur.Width)
             {
                 Canvas.SetTop(rectTracteur, yDeplacement);

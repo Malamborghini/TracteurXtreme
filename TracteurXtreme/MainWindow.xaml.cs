@@ -38,40 +38,36 @@ namespace TracteurXtreme
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left) { gauche = true; }
-            if (e.Key == Key.Right) { droite = true; }
-            if (e.Key == Key.Up) { haut = true; }
-            if (e.Key == Key.Down) { bas = true; }
-            DeplacerTracteur();
-            
+            if (e.Key == Key.Left) { gauche = true; } // flèche gauche pressée
+            if (e.Key == Key.Right) { droite = true; } // flèche droite pressée
+            if (e.Key == Key.Up) { haut = true; } // flèche haut pressée
+            if (e.Key == Key.Down) { bas = true; } // flèche bas pressée
+            DeplacerTracteur(); // appel de la méthode pour les déplacements            
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left) { gauche = false; }
-            if (e.Key == Key.Right) { droite = false; }
-            if (e.Key == Key.Up) { haut = false; }
-            if (e.Key == Key.Down) { bas = false; }           
+            if (e.Key == Key.Left) { gauche = false; } // flèche gauche relâchée 
+            if (e.Key == Key.Right) { droite = false; } // flèche droite relâchée 
+            if (e.Key == Key.Up) { haut = false; } // flèche haut relâchée 
+            if (e.Key == Key.Down) { bas = false; } // flèche bas relâchée           
         }
         private void DeplacerTracteur()
         {
             double posX = Canvas.GetLeft(rectTracteur);
             double posY = Canvas.GetTop(rectTracteur);
 
-            if (gauche && !droite) { posX -= VITESSE_TRACTEUR; }
-            else if (!gauche && droite) { posX += VITESSE_TRACTEUR; }
-            if (haut && !bas) { posY -= VITESSE_TRACTEUR; }
-            else if (!haut && bas) { posY += VITESSE_TRACTEUR; }
-            //Canvas.SetLeft(rectTracteur, posX);
-            //Canvas.SetTop(rectTracteur, posY);
+            if (gauche && !droite) { posX -= VITESSE_TRACTEUR; } // si gauche pressée et non droite, déplacement à gauche
+            else if (!gauche && droite) { posX += VITESSE_TRACTEUR; } // si droite pressée et non gauche, déplacement à droite
 
-            if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width)
-            { Canvas.SetLeft(rectTracteur, posX); }
-            if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width)
+            if (haut && !bas) { posY -= VITESSE_TRACTEUR; } // si haut pressée et non bas, déplacement en haut
+            else if (!haut && bas) { posY += VITESSE_TRACTEUR; } // si bas pressée et non haut, déplacement en bas
+
+            // met à jour les positions X et Y
+            if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width) // vérifie si X n'est pas hors largeur du canvas
+            { Canvas.SetLeft(rectTracteur, posX); } 
+            if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width) // vérifie si Y n'est pas hors hauteur du canvas
             { Canvas.SetTop(rectTracteur, posY); }
-
         }
-
-
 
         private void Collision()
         {

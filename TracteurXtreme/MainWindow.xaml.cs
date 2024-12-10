@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,16 +20,22 @@ namespace TracteurXtreme
         public static readonly int VITESSE_TRACTEUR = 5;
         public Rect tracteurHitbox;
         public Rect murHitbox;
+        MenuPrincipal menuPrincipal;
+        public static int niveau {  get; set; }
         public MainWindow()
         {
             InitializeComponent();
 
+            menuPrincipal = new MenuPrincipal();
+            menuPrincipal.ShowDialog();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Owner.Show();
-            this.Hide();
+            menuPrincipal = new MenuPrincipal();
+            menuPrincipal.Owner = this;
+            menuPrincipal.Show();
+            //this.Hide();
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {

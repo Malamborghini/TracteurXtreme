@@ -62,7 +62,7 @@ namespace TracteurXtreme
             AfficherChrono();
 
             DeplacerTracteur(); // appel de la méthode pour les déplacements
-            DeplacerTracteursAutomatiques(); // appel de la méthode pour les déplacements automatiques
+            // appel de la méthode pour les déplacements automatiques
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

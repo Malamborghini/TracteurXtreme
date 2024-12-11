@@ -100,5 +100,8 @@
                 <DropShadowEffect />
             </Label.Effect>
         </Label>
+        <Label x:Name="labChrono" Content="00:00.000" Canvas.Left="422" Canvas.Top="20" Background="#FFDEB5B5" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+
     </Canvas>
 </Window>

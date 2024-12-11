@@ -1,4 +1,5 @@
-﻿using System.Security.Policy;
+﻿using System.Diagnostics;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,21 +26,29 @@ namespace TracteurXtreme
         public Rect murHitbox;
         public MenuPrincipal menuPrincipal;
         public DispatcherTimer minuterie;
+        public Stopwatch chronometre;
+        public TimeSpan tempsEcoule;
         public MainWindow()
         {
             InitializeComponent();
-            InitTimer();
             InitBitmap();
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
+            InitTimer();
 
         }
         private void InitTimer()
         {
+            chronometre = Stopwatch.StartNew(); // mesurer le temps écoulé
             minuterie = new DispatcherTimer();
             minuterie.Interval = TimeSpan.FromMilliseconds(16);
             minuterie.Tick += Jeu;
             minuterie.Start();
+        }
+        private void AfficherChrono()
+        {
+            tempsEcoule = chronometre.Elapsed; // récupère temps écoulé
+            labChrono.Content = tempsEcoule.ToString(@"mm\:ss\.fff"); // format chrono (minutes : secondes : millisecondes)
         }
         private void InitBitmap()
         {
@@ -50,8 +59,10 @@ namespace TracteurXtreme
         }
         private void Jeu(object? sender, EventArgs e)
         {
-            DeplacerTracteur(); // appel de la méthode pour les déplacements
+            AfficherChrono();
 
+            DeplacerTracteur(); // appel de la méthode pour les déplacements
+            DeplacerTracteursAutomatiques(); // appel de la méthode pour les déplacements automatiques
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

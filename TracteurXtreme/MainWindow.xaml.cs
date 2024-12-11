@@ -18,7 +18,7 @@ namespace TracteurXtreme
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static readonly int VITESSE_TRACTEUR = 5;
+        public int vitesseTracteur = 5;
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
@@ -111,11 +111,11 @@ namespace TracteurXtreme
             double posX = Canvas.GetLeft(rectTracteur);
             double posY = Canvas.GetTop(rectTracteur);
 
-            if (gauche && !droite) { posX -= VITESSE_TRACTEUR; } // si gauche pressée et non droite, déplacement à gauche
-            else if (!gauche && droite) { posX += VITESSE_TRACTEUR; } // si droite pressée et non gauche, déplacement à droite
+            if (gauche && !droite) { posX -= vitesseTracteur; } // si gauche pressée et non droite, déplacement à gauche
+            else if (!gauche && droite) { posX += vitesseTracteur; } // si droite pressée et non gauche, déplacement à droite
 
-            if (haut && !bas) { posY -= VITESSE_TRACTEUR; } // si haut pressée et non bas, déplacement en haut
-            else if (!haut && bas) { posY += VITESSE_TRACTEUR; } // si bas pressée et non haut, déplacement en bas
+            if (haut && !bas) { posY -= vitesseTracteur; } // si haut pressée et non bas, déplacement en haut
+            else if (!haut && bas) { posY += vitesseTracteur; } // si bas pressée et non haut, déplacement en bas
 
             // met à jour les positions X et Y
             if (minuterie.IsEnabled)

@@ -14,7 +14,7 @@
     mc:Ignorable="d">
     <Canvas x:Name="canvasPiste">
         <Canvas.Background>
-            <ImageBrush ImageSource="/img/backcircuit1.png" />
+            <ImageBrush ImageSource="/img/piste.png" />
         </Canvas.Background>
         <Button
             Canvas.Left="52"

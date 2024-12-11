@@ -20,6 +20,7 @@ namespace TracteurXtreme
     {
         public static readonly int VITESSE_TRACTEUR = 5;
         public static bool gauche, droite, haut, bas;
+        private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
         public Rect murHitbox;
         public MenuPrincipal menuPrincipal;
@@ -28,7 +29,7 @@ namespace TracteurXtreme
         {
             InitializeComponent();
             InitTimer();
-
+            InitBitmap();
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
 
@@ -40,10 +41,17 @@ namespace TracteurXtreme
             minuterie.Tick += Jeu;
             minuterie.Start();
         }
-
+        private void InitBitmap()
+        {
+            tracteurGauche = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/gauche/tracteurNoirJoueur_gauche.png"));
+            tracteurDroite = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/droite/tracteurNoirJoueur_droite.png"));
+            tracteurHaut = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/haut/tracteurNoirJoueur_haut.png"));
+            tracteurBas = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/bas/tracteurNoirJoueur_bas.png"));
+        }
         private void Jeu(object? sender, EventArgs e)
         {
-            
+            DeplacerTracteur(); // appel de la méthode pour les déplacements
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -53,13 +61,32 @@ namespace TracteurXtreme
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left) { gauche = true; } // flèche gauche pressée
-            if (e.Key == Key.Right) { droite = true; } // flèche droite pressée
-            if (e.Key == Key.Up) { haut = true; } // flèche haut pressée
-            if (e.Key == Key.Down) { bas = true; } // flèche bas pressée
-            DeplacerTracteur(); // appel de la méthode pour les déplacements
+            if (e.Key == Key.Left) // flèche gauche pressée
+            { 
+                gauche = true;
+                if (imgTracteur.ImageSource != tracteurGauche) // changement image gauche avec vérification
+                { imgTracteur.ImageSource = tracteurGauche; }
+            } 
+            if (e.Key == Key.Right) // flèche droite pressée
+            { 
+                droite = true;
+                if (imgTracteur.ImageSource != tracteurDroite) // changement image droite avec vérification
+                { imgTracteur.ImageSource = tracteurDroite; }
+            } 
+            if (e.Key == Key.Up) // flèche haut pressée
+            { 
+                haut = true;
+                if (imgTracteur.ImageSource != tracteurHaut) // changement image haut avec vérification
+                { imgTracteur.ImageSource = tracteurHaut; }
+            } 
+            if (e.Key == Key.Down) // flèche bas pressée
+            { 
+                bas = true;
+                if (imgTracteur.ImageSource != tracteurBas) // changement image bas avec vérification
+                { imgTracteur.ImageSource = tracteurBas; }
+            } 
 
-            //mettre en pause
+            // mettre en pause
             if (e.Key == Key.Space)
             {
                 if (minuterie.IsEnabled) { minuterie.Stop(); }
@@ -73,10 +100,11 @@ namespace TracteurXtreme
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left) { gauche = false; } // flèche gauche relâchée 
-            if (e.Key == Key.Right) { droite = false; } // flèche droite relâchée 
-            if (e.Key == Key.Up) { haut = false; } // flèche haut relâchée 
-            if (e.Key == Key.Down) { bas = false; } // flèche bas relâchée           
+            if (e.Key == Key.Left) { gauche = false; } // flèche gauche relâchée  
+            if (e.Key == Key.Right) { droite = false; } // flèche droite relâchée  
+            if (e.Key == Key.Up) { haut = false; } // flèche haut relâchée  
+            if (e.Key == Key.Down) { bas = false; } // flèche bas relâchée 
+
         }
         private void DeplacerTracteur()
         {

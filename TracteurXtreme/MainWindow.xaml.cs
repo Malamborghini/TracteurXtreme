@@ -48,22 +48,6 @@ namespace TracteurXtreme
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //ComboBoxItem selectedItem = (ComboBoxItem)cbChoixNiveau.SelectedItem;
-            //if (selectedItem != null)
-            //{
-            //    string content = selectedItem.Content.ToString();
-            //    // You can check if it matches a particular string or handle it
-            //    if (content == "Piste Bulle Rose Xtreme Remastered")
-            //    {
-            //        // Do something
-            //    }
-            //}
-            //if (cbChoixNiveau.SelectedItem == cbNiveauRose)
-            //{
-            //    // Do something
-            //}
-
-
             menuPrincipal.ShowDialog();
         }
 

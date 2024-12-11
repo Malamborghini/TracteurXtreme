@@ -12,7 +12,9 @@
     KeyUp="Window_KeyUp"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Loaded="Window_Loaded"
+    SizeChanged="Window_SizeChanged">
     <Canvas x:Name="canvasPiste">
         <Canvas.Background>
             <ImageBrush ImageSource="/img/piste_fondVert.png" />

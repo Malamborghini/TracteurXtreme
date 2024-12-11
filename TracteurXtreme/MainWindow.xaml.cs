@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -39,7 +40,6 @@ namespace TracteurXtreme
             InitTimer();
             Canvas.SetLeft(labChrono, canvasPiste.ActualHeight);
             Canvas.SetTop(labChrono, 0);
-
         }
         private void InitTimer()
         {
@@ -64,10 +64,7 @@ namespace TracteurXtreme
         private void Jeu(object? sender, EventArgs e)
         {
             AfficherChrono();
-            double posX = (canvasPiste.ActualWidth - rectTracteurRouge.Width) - (canvasPiste.ActualWidth / 1.1);
-            double posY = (canvasPiste.ActualHeight - rectTracteurRouge.Height) - (canvasPiste.ActualHeight / 2);
-            Canvas.SetLeft(rectTracteurRouge, posX);
-            Canvas.SetTop(rectTracteurRouge, posY);
+            InitPositionAdversaire();
             DeplacerJoueur();
             DeplacerAdversaire();
         }
@@ -101,10 +98,8 @@ namespace TracteurXtreme
         {
             if (e.Key == Key.Left) { gauche = false; } // flèche gauche relâchée  
             if (e.Key == Key.Right) { droite = false; } // flèche droite relâchée  
-
             if (e.Key == Key.Up) { haut = false; } // flèche haut relâchée  
             if (e.Key == Key.Down) { bas = false; } // flèche bas relâchée 
-
         }
         private void DeplacerJoueur()
         {
@@ -174,6 +169,111 @@ namespace TracteurXtreme
             //    }
             //}
         }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitPositionAdversaire();
+            DeplacerTracteurAdversaire();
+        }
+
+        private void InitPositionAdversaire()
+        {
+            double posX = (canvasPiste.ActualWidth - rectTracteurRouge.Width) - (canvasPiste.ActualWidth / 1.1);
+            double posY = (canvasPiste.ActualHeight - rectTracteurRouge.Height) - (canvasPiste.ActualHeight / 2);
+            Canvas.SetLeft(rectTracteurRouge, posX);
+            Canvas.SetTop(rectTracteurRouge, posY);
+        }
+        private void DeplacerTracteurAdversaire()
+        {
+            // Calculer positions
+            double pointDePiste_1 = (canvasPiste.ActualHeight /1.1) - (rectTracteurRouge.Height/1.1);
+            double pointDePiste_2 = (canvasPiste.ActualWidth / 2) - (rectTracteurRouge.Width / 2);
+            double pointDePiste_3 = (canvasPiste.ActualHeight / 2.9) - (rectTracteurRouge.Height / 2.9);
+            double pointDePiste_4 = (canvasPiste.ActualWidth/1.35) - (rectTracteurRouge.Width/1.35);
+
+            //DoubleAnimation[] animations = new DoubleAnimation[]
+            //{
+            //    new DoubleAnimation
+            //    {
+            //        From = Canvas.GetTop(rectTracteurRouge),
+            //        To = pointDePiste_1,
+            //        Duration = TimeSpan.FromSeconds(2)
+            //    }
+            //};
+
+            // Animation aller en bas
+            DoubleAnimation animationAllerEnBas = new DoubleAnimation
+            {
+                From = Canvas.GetTop(rectTracteurRouge),
+                To = pointDePiste_1,
+                Duration = TimeSpan.FromSeconds(2)
+            };
+
+            // Animation aller a droite
+            DoubleAnimation animationAllerADroite = new DoubleAnimation
+            {
+                From = Canvas.GetLeft(rectTracteurRouge),
+                To = pointDePiste_2,
+                Duration = TimeSpan.FromSeconds(2)
+            };
+
+            // Animation aller en haut
+            DoubleAnimation animationAllerEnHaut = new DoubleAnimation
+            {
+                From = pointDePiste_1,
+                To = pointDePiste_3,
+                Duration = TimeSpan.FromSeconds(2)
+            };
+
+            // Animation aller a droite
+            DoubleAnimation animationAllerADroite2emeFois = new DoubleAnimation
+            {
+                From = pointDePiste_2,
+                To = pointDePiste_4,
+                Duration = TimeSpan.FromSeconds(2)
+            };
+
+            // Creation de Storyboard
+            Storyboard storyboard = new Storyboard();
+
+            //foreach (DoubleAnimation animation in animations)
+            //{
+            //    storyboard.Children.Add(animation);
+            //}
+
+            // Ajout animations a la storyboard
+            storyboard.Children.Add(animationAllerEnBas);
+            storyboard.Children.Add(animationAllerADroite);
+            storyboard.Children.Add(animationAllerEnHaut);
+            storyboard.Children.Add(animationAllerADroite2emeFois);
+
+            // mise en place des targets d'animation
+            Storyboard.SetTarget(animationAllerEnBas, rectTracteurRouge);
+            Storyboard.SetTargetProperty(animationAllerEnBas, new PropertyPath("(Canvas.Top)"));
+
+            Storyboard.SetTarget(animationAllerADroite, rectTracteurRouge);
+            Storyboard.SetTargetProperty(animationAllerADroite, new PropertyPath("(Canvas.Left)"));
+
+            Storyboard.SetTarget(animationAllerEnHaut, rectTracteurRouge);
+            Storyboard.SetTargetProperty(animationAllerEnHaut, new PropertyPath("(Canvas.Top)"));
+
+            Storyboard.SetTarget(animationAllerADroite2emeFois, rectTracteurRouge);
+            Storyboard.SetTargetProperty(animationAllerADroite2emeFois, new PropertyPath("(Canvas.Left)"));
+
+            // Commencer animations avec delais secondes
+            animationAllerEnBas.BeginTime = TimeSpan.FromSeconds(2);
+            animationAllerADroite.BeginTime = TimeSpan.FromSeconds(4); 
+            animationAllerEnHaut.BeginTime = TimeSpan.FromSeconds(6);
+            animationAllerADroite2emeFois.BeginTime = TimeSpan.FromSeconds(8);
+
+            storyboard.Begin();
+        }
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            InitPositionAdversaire();
+            DeplacerTracteurAdversaire();
+        }
+
+
         private void Collision()
         {
             //tracteurHitbox = new Rect(Canvas.GetLeft(rectTracteur), Canvas.GetTop(rectTracteur), rectTracteur.Width, rectTracteur.Height);

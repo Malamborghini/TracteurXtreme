@@ -20,8 +20,8 @@ namespace TracteurXtreme
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int vitesseTracteur = 5;
-        public int vitesseTracteurAdversaire = 5;
+        public int vitesseTracteurJoueur = 5;
+        public int vitesseTracteurAdversaire = 2; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
@@ -66,7 +66,6 @@ namespace TracteurXtreme
             AfficherChrono();
             InitPositionAdversaire();
             DeplacerJoueur();
-            DeplacerAdversaire();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -117,26 +116,26 @@ namespace TracteurXtreme
 
             if (gauche && !droite) 
             { 
-                posX -= vitesseTracteur;
+                posX -= vitesseTracteurJoueur;
                 if (imgTracteur.ImageSource != tracteurGauche) // changement image gauche avec vérification
                 { imgTracteur.ImageSource = tracteurGauche; } // si gauche pressée et non droite, déplacement à gauche
             } 
             else if (!gauche && droite) 
             {
-                posX += vitesseTracteur;
+                posX += vitesseTracteurJoueur;
                 if (imgTracteur.ImageSource != tracteurDroite) // changement image droite avec vérification
                 { imgTracteur.ImageSource = tracteurDroite; } // si droite pressée et non gauche, déplacement à droite
             } 
 
             if (haut && !bas) 
             {
-                posY -= vitesseTracteur;
+                posY -= vitesseTracteurJoueur;
                 if (imgTracteur.ImageSource != tracteurHaut) // changement image haut avec vérification
                 { imgTracteur.ImageSource = tracteurHaut; } // si haut pressée et non bas, déplacement en haut
             } 
             else if (!haut && bas) 
             {
-                posY += vitesseTracteur;
+                posY += vitesseTracteurJoueur;
                 if (imgTracteur.ImageSource != tracteurBas) // changement image bas avec vérification
                 { imgTracteur.ImageSource = tracteurBas; } // si bas pressée et non haut, déplacement en bas
             } 
@@ -158,17 +157,6 @@ namespace TracteurXtreme
                 }
             }
         }
-        private void DeplacerAdversaire()
-        {
-            //if (Canvas.GetTop(rectTracteurRouge) == 260) //droite
-            //{
-            //    Canvas.SetLeft(rectTracteurRouge, Canvas.GetLeft(rectTracteurRouge) + vitesseTracteurAdversaire);
-            //    if (Canvas.GetLeft(rectTracteurRouge) > 400)
-            //    {
-            //        Canvas.SetLeft(rectTracteurRouge, 395);
-            //    }
-            //}
-        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             InitPositionAdversaire();
@@ -184,86 +172,67 @@ namespace TracteurXtreme
         }
         private void DeplacerTracteurAdversaire()
         {
-            // Calculer positions
             double pointDePiste_1 = (canvasPiste.ActualHeight /1.1) - (rectTracteurRouge.Height/1.1);
             double pointDePiste_2 = (canvasPiste.ActualWidth / 2) - (rectTracteurRouge.Width / 2);
             double pointDePiste_3 = (canvasPiste.ActualHeight / 2.9) - (rectTracteurRouge.Height / 2.9);
             double pointDePiste_4 = (canvasPiste.ActualWidth/1.35) - (rectTracteurRouge.Width/1.35);
 
-            //DoubleAnimation[] animations = new DoubleAnimation[]
-            //{
-            //    new DoubleAnimation
-            //    {
-            //        From = Canvas.GetTop(rectTracteurRouge),
-            //        To = pointDePiste_1,
-            //        Duration = TimeSpan.FromSeconds(2)
-            //    }
-            //};
-
-            // Animation aller en bas
-            DoubleAnimation animationAllerEnBas = new DoubleAnimation
+            DoubleAnimation[] animations = new DoubleAnimation[]
             {
-                From = Canvas.GetTop(rectTracteurRouge),
-                To = pointDePiste_1,
-                Duration = TimeSpan.FromSeconds(2)
+                new DoubleAnimation
+                {
+                    From = Canvas.GetTop(rectTracteurRouge),
+                    To = pointDePiste_1,
+                    Duration = TimeSpan.FromSeconds(2)
+                },
+
+                new DoubleAnimation
+                {
+                    From = Canvas.GetLeft(rectTracteurRouge),
+                    To = pointDePiste_2,
+                    Duration = TimeSpan.FromSeconds(2)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_1,
+                    To = pointDePiste_3,
+                    Duration = TimeSpan.FromSeconds(2)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_2,
+                    To = pointDePiste_4,
+                    Duration = TimeSpan.FromSeconds(2)
+                }
             };
 
-            // Animation aller a droite
-            DoubleAnimation animationAllerADroite = new DoubleAnimation
-            {
-                From = Canvas.GetLeft(rectTracteurRouge),
-                To = pointDePiste_2,
-                Duration = TimeSpan.FromSeconds(2)
-            };
-
-            // Animation aller en haut
-            DoubleAnimation animationAllerEnHaut = new DoubleAnimation
-            {
-                From = pointDePiste_1,
-                To = pointDePiste_3,
-                Duration = TimeSpan.FromSeconds(2)
-            };
-
-            // Animation aller a droite
-            DoubleAnimation animationAllerADroite2emeFois = new DoubleAnimation
-            {
-                From = pointDePiste_2,
-                To = pointDePiste_4,
-                Duration = TimeSpan.FromSeconds(2)
-            };
-
-            // Creation de Storyboard
+            // Creation de Storyboard et lui ajouter des animations 
             Storyboard storyboard = new Storyboard();
-
-            //foreach (DoubleAnimation animation in animations)
-            //{
-            //    storyboard.Children.Add(animation);
-            //}
-
-            // Ajout animations a la storyboard
-            storyboard.Children.Add(animationAllerEnBas);
-            storyboard.Children.Add(animationAllerADroite);
-            storyboard.Children.Add(animationAllerEnHaut);
-            storyboard.Children.Add(animationAllerADroite2emeFois);
+            foreach (DoubleAnimation animation in animations)
+            {
+                storyboard.Children.Add(animation);
+            }
 
             // mise en place des targets d'animation
-            Storyboard.SetTarget(animationAllerEnBas, rectTracteurRouge);
-            Storyboard.SetTargetProperty(animationAllerEnBas, new PropertyPath("(Canvas.Top)"));
+            Storyboard.SetTarget(animations[0], rectTracteurRouge);
+            Storyboard.SetTargetProperty(animations[0], new PropertyPath("(Canvas.Top)"));
 
-            Storyboard.SetTarget(animationAllerADroite, rectTracteurRouge);
-            Storyboard.SetTargetProperty(animationAllerADroite, new PropertyPath("(Canvas.Left)"));
+            Storyboard.SetTarget(animations[1], rectTracteurRouge);
+            Storyboard.SetTargetProperty(animations[1], new PropertyPath("(Canvas.Left)"));
 
-            Storyboard.SetTarget(animationAllerEnHaut, rectTracteurRouge);
-            Storyboard.SetTargetProperty(animationAllerEnHaut, new PropertyPath("(Canvas.Top)"));
+            Storyboard.SetTarget(animations[2], rectTracteurRouge);
+            Storyboard.SetTargetProperty(animations[2], new PropertyPath("(Canvas.Top)"));
 
-            Storyboard.SetTarget(animationAllerADroite2emeFois, rectTracteurRouge);
-            Storyboard.SetTargetProperty(animationAllerADroite2emeFois, new PropertyPath("(Canvas.Left)"));
+            Storyboard.SetTarget(animations[3], rectTracteurRouge);
+            Storyboard.SetTargetProperty(animations[3], new PropertyPath("(Canvas.Left)"));
 
             // Commencer animations avec delais secondes
-            animationAllerEnBas.BeginTime = TimeSpan.FromSeconds(2);
-            animationAllerADroite.BeginTime = TimeSpan.FromSeconds(4); 
-            animationAllerEnHaut.BeginTime = TimeSpan.FromSeconds(6);
-            animationAllerADroite2emeFois.BeginTime = TimeSpan.FromSeconds(8);
+            for (int i = 0; i < animations.Length; i++)
+            {
+                animations[i].BeginTime = TimeSpan.FromSeconds((i+1) * vitesseTracteurAdversaire);
+            }
 
             storyboard.Begin();
         }
@@ -272,7 +241,6 @@ namespace TracteurXtreme
             InitPositionAdversaire();
             DeplacerTracteurAdversaire();
         }
-
 
         private void Collision()
         {

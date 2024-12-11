@@ -67,7 +67,8 @@ namespace TracteurXtreme
             double posY = (canvasPiste.ActualHeight - rectTracteurRouge.Height) - (canvasPiste.ActualHeight / 2);
             Canvas.SetLeft(rectTracteurRouge, posX);
             Canvas.SetTop(rectTracteurRouge, posY);
-            DeplacerTracteur(); // appel de la méthode pour les déplacements
+            DeplacerJoueur();
+            DeplacerAdversaire();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -122,8 +123,9 @@ namespace TracteurXtreme
             if (e.Key == Key.Down) { bas = false; } // flèche bas relâchée 
 
         }
-        private void DeplacerTracteur()
+        private void DeplacerJoueur()
         {
+            //met le tracteur au bon endroit au demarrage
             if (uneSeulefois)
             {
                 double posInitX = (canvasPiste.ActualWidth - rectTracteur.Width) - (canvasPiste.ActualWidth / 1.17);
@@ -157,9 +159,11 @@ namespace TracteurXtreme
                     uneSeulefois = false;
                 }
             }
-                
         }
+        private void DeplacerAdversaire()
+        {
 
+        }
         private void Collision()
         {
             //tracteurHitbox = new Rect(Canvas.GetLeft(rectTracteur), Canvas.GetTop(rectTracteur), rectTracteur.Width, rectTracteur.Height);

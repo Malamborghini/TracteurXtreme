@@ -67,12 +67,10 @@ namespace TracteurXtreme
             InitPositionAdversaire();
             DeplacerJoueur();
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             menuPrincipal.ShowDialog();
         }
-
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Left) { gauche = true; }  // flèche gauche pressée
@@ -162,7 +160,6 @@ namespace TracteurXtreme
             InitPositionAdversaire();
             DeplacerTracteurAdversaire();
         }
-
         private void InitPositionAdversaire()
         {
             double posX = (canvasPiste.ActualWidth - rectTracteurRouge.Width) - (canvasPiste.ActualWidth / 1.1);
@@ -183,32 +180,32 @@ namespace TracteurXtreme
                 {
                     From = Canvas.GetTop(rectTracteurRouge),
                     To = pointDePiste_1,
-                    Duration = TimeSpan.FromSeconds(2)
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
                 },
 
                 new DoubleAnimation
                 {
                     From = Canvas.GetLeft(rectTracteurRouge),
                     To = pointDePiste_2,
-                    Duration = TimeSpan.FromSeconds(2)
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
                 },
 
                 new DoubleAnimation
                 {
                     From = pointDePiste_1,
                     To = pointDePiste_3,
-                    Duration = TimeSpan.FromSeconds(2)
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
                 },
 
                 new DoubleAnimation
                 {
                     From = pointDePiste_2,
                     To = pointDePiste_4,
-                    Duration = TimeSpan.FromSeconds(2)
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
                 }
             };
 
-            // Creation de Storyboard et lui ajouter des animations 
+            // Creer la Storyboard et lui ajouter des animations 
             Storyboard storyboard = new Storyboard();
             foreach (DoubleAnimation animation in animations)
             {

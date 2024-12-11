@@ -20,6 +20,7 @@ namespace TracteurXtreme
     public partial class MainWindow : Window
     {
         public int vitesseTracteur = 5;
+        public int vitesseTracteurAdversaire = 5;
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
@@ -164,7 +165,14 @@ namespace TracteurXtreme
         }
         private void DeplacerAdversaire()
         {
-
+            //if (Canvas.GetTop(rectTracteurRouge) == 260) //droite
+            //{
+            //    Canvas.SetLeft(rectTracteurRouge, Canvas.GetLeft(rectTracteurRouge) + vitesseTracteurAdversaire);
+            //    if (Canvas.GetLeft(rectTracteurRouge) > 400)
+            //    {
+            //        Canvas.SetLeft(rectTracteurRouge, 395);
+            //    }
+            //}
         }
         private void Collision()
         {

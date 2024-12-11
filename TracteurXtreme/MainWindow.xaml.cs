@@ -75,30 +75,11 @@ namespace TracteurXtreme
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left) // flèche gauche pressée
-            { 
-                gauche = true;
-                if (imgTracteur.ImageSource != tracteurGauche) // changement image gauche avec vérification
-                { imgTracteur.ImageSource = tracteurGauche; }
-            } 
-            if (e.Key == Key.Right) // flèche droite pressée
-            { 
-                droite = true;
-                if (imgTracteur.ImageSource != tracteurDroite) // changement image droite avec vérification
-                { imgTracteur.ImageSource = tracteurDroite; }
-            } 
-            if (e.Key == Key.Up) // flèche haut pressée
-            { 
-                haut = true;
-                if (imgTracteur.ImageSource != tracteurHaut) // changement image haut avec vérification
-                { imgTracteur.ImageSource = tracteurHaut; }
-            } 
-            if (e.Key == Key.Down) // flèche bas pressée
-            { 
-                bas = true;
-                if (imgTracteur.ImageSource != tracteurBas) // changement image bas avec vérification
-                { imgTracteur.ImageSource = tracteurBas; }
-            } 
+            if (e.Key == Key.Left) { gauche = true; }  // flèche gauche pressée
+            if (e.Key == Key.Right) { droite = true; }// flèche droite pressée
+
+            if (e.Key == Key.Up) { haut = true; } // flèche haut pressée
+            if (e.Key == Key.Down) { bas = true; } // flèche bas pressée
 
             // mettre en pause
             if (e.Key == Key.Space)
@@ -116,6 +97,7 @@ namespace TracteurXtreme
         {
             if (e.Key == Key.Left) { gauche = false; } // flèche gauche relâchée  
             if (e.Key == Key.Right) { droite = false; } // flèche droite relâchée  
+
             if (e.Key == Key.Up) { haut = false; } // flèche haut relâchée  
             if (e.Key == Key.Down) { bas = false; } // flèche bas relâchée 
 
@@ -133,13 +115,33 @@ namespace TracteurXtreme
             double posX = Canvas.GetLeft(rectTracteur);
             double posY = Canvas.GetTop(rectTracteur);
 
-            if (gauche && !droite) { posX -= vitesseTracteur; } // si gauche pressée et non droite, déplacement à gauche
-            else if (!gauche && droite) { posX += vitesseTracteur; } // si droite pressée et non gauche, déplacement à droite
+            if (gauche && !droite) 
+            { 
+                posX -= vitesseTracteur;
+                if (imgTracteur.ImageSource != tracteurGauche) // changement image gauche avec vérification
+                { imgTracteur.ImageSource = tracteurGauche; } // si gauche pressée et non droite, déplacement à gauche
+            } 
+            else if (!gauche && droite) 
+            {
+                posX += vitesseTracteur;
+                if (imgTracteur.ImageSource != tracteurDroite) // changement image droite avec vérification
+                { imgTracteur.ImageSource = tracteurDroite; } // si droite pressée et non gauche, déplacement à droite
+            } 
 
-            if (haut && !bas) { posY -= vitesseTracteur; } // si haut pressée et non bas, déplacement en haut
-            else if (!haut && bas) { posY += vitesseTracteur; } // si bas pressée et non haut, déplacement en bas
+            if (haut && !bas) 
+            {
+                posY -= vitesseTracteur;
+                if (imgTracteur.ImageSource != tracteurHaut) // changement image haut avec vérification
+                { imgTracteur.ImageSource = tracteurHaut; } // si haut pressée et non bas, déplacement en haut
+            } 
+            else if (!haut && bas) 
+            {
+                posY += vitesseTracteur;
+                if (imgTracteur.ImageSource != tracteurBas) // changement image bas avec vérification
+                { imgTracteur.ImageSource = tracteurBas; } // si bas pressée et non haut, déplacement en bas
+            } 
 
-            // met à jour les positions X et Y
+            // mettre à jour les positions X et Y
             if (minuterie.IsEnabled)
             {
                 // vérifie si X n'est pas hors largeur du canvas

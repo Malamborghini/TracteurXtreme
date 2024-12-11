@@ -52,12 +52,12 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <ComboBox Grid.Column="1" Grid.Row="1" 
+        <ComboBox x:Name="cbChoixNiveau" Grid.Column="1" Grid.Row="1" 
                   Foreground="#FF9D0F0F" BorderBrush="#FF9D0F0F" Background="#FF9D0F0F" Margin="5,0,5,0" Height="35">
-            <ComboBoxItem Content="Piste Bulle Rose Xtreme Remastered"/>
-            <ComboBoxItem Content="Piste Demon du Feu Xtreme"/>
-            <ComboBoxItem Content="Piste Ferme Original"/>
-            <ComboBoxItem Content="Piste Aventure Aquatique Xtreme"/>
+            <ComboBoxItem x:Name="cbNiveauRose" Content="Piste Bulle Rose Xtreme Remastered"/>
+            <ComboBoxItem x:Name="cbNiveauFeu" Content="Piste Demon du Feu Xtreme"/>
+            <ComboBoxItem x:Name="cbNiveauFerme" Content="Piste Ferme Original"/>
+            <ComboBoxItem x:Name="cbNiveauAquatique" Content="Piste Aventure Aquatique Xtreme"/>
         </ComboBox>
 
     </Grid>

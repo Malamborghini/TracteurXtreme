@@ -10,11 +10,12 @@
     Height="540"
     KeyDown="Window_KeyDown"
     KeyUp="Window_KeyUp"
+    WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
     <Canvas x:Name="canvasPiste">
         <Canvas.Background>
-            <ImageBrush ImageSource="/img/backcircuit1.png" />
+            <ImageBrush ImageSource="/img/piste_fondVert.png" />
         </Canvas.Background>
         <Button
             Canvas.Left="52"
@@ -23,68 +24,25 @@
             Content="retour au menu" />
         <Rectangle
             x:Name="rectTracteur"
-            Canvas.Left="80"
-            Canvas.Top="100"
-            Width="70"
-            Height="50">
+            Canvas.Left="96"
+            Canvas.Top="177"
+            Width="50"
+            Height="60" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Rectangle.Fill>
-                <ImageBrush x:Name="imgTracteur" ImageSource="/img/imgTracteurs/gauche/tracteurNoirJoueur_gauche.png" />
+                <ImageBrush x:Name="imgTracteur" ImageSource="/img/imgTracteurs/bas/tracteurNoirJoueur_bas.png" />
             </Rectangle.Fill>
         </Rectangle>
 
         <Rectangle
-            x:Name="rectTracteur1"
-            Canvas.Left="480"
-            Canvas.Top="75"
-            Width="70"
-            Height="50" RenderTransformOrigin="1.043,1.5">
+            x:Name="rectTracteurRouge"
+            Canvas.Left="38"
+            Canvas.Top="176"
+            Width="50"
+            Height="70" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Rectangle.Fill>
-                <ImageBrush x:Name="imgTracteur1" ImageSource="/img/imgTracteurs/gauche/tracteurBleu_gauche.png" />
+                <ImageBrush x:Name="imgTracteur4" ImageSource="/img/imgTracteurs/bas/tracteurRouge_bas.png" />
             </Rectangle.Fill>
         </Rectangle>
-
-        <Rectangle
-            x:Name="rectTracteur2"
-            Canvas.Left="697"
-            Canvas.Top="75"
-            Width="70"
-            Height="50" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Rectangle.Fill>
-                <ImageBrush x:Name="imgTracteur2" ImageSource="/img/imgTracteurs/gauche/tracteurJaune_gauche.png" />
-            </Rectangle.Fill>
-        </Rectangle>
-
-        <Rectangle
-            x:Name="rectTracteur3"
-            Canvas.Left="697"
-            Canvas.Top="206"
-            Width="70"
-            Height="50" RenderTransformOrigin="0.65,1.499" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Rectangle.Fill>
-                <ImageBrush x:Name="imgTracteur3" ImageSource="/img/imgTracteurs/gauche/tracteurOrange_gauche.png" />
-            </Rectangle.Fill>
-        </Rectangle>
-
-        <Rectangle
-            x:Name="rectTracteur4"
-            Canvas.Left="480"
-            Canvas.Top="206"
-            Width="70"
-            Height="50">
-            <Rectangle.Fill>
-                <ImageBrush x:Name="imgTracteur4" ImageSource="/img/imgTracteurs/gauche/tracteurRouge_gauche.png" />
-            </Rectangle.Fill>
-        </Rectangle>
-
-        <Rectangle
-            x:Name="murTest"
-            Canvas.Left="258"
-            Canvas.Top="131"
-            Width="80"
-            Height="200"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Stroke="Black" />
         <Label
             Name="labPauseJeu"
             Canvas.Top="0"

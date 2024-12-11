@@ -40,6 +40,7 @@
     <None Remove="img\imgTracteurs\haut\tracteurRouge_haut.png" />
     <None Remove="img\imgTracteurs\haut\tracteurVert_haut.png" />
     <None Remove="img\piste.png" />
+    <None Remove="img\piste_fondVert.png" />
     <None Remove="img\race_tracteur.png" />
     <None Remove="img\tracteur_vert.png" />
   </ItemGroup>
@@ -76,6 +77,7 @@
     <Resource Include="img\imgTracteurs\haut\tracteurRouge_haut.png" />
     <Resource Include="img\imgTracteurs\haut\tracteurVert_haut.png" />
     <Resource Include="img\piste.png" />
+    <Resource Include="img\piste_fondVert.png" />
     <Resource Include="img\race_tracteur.png" />
     <Resource Include="img\tracteur_vert.png" />
   </ItemGroup>

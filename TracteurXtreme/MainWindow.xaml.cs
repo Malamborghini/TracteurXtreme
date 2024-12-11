@@ -25,6 +25,7 @@ namespace TracteurXtreme
         public Rect murHitbox;
         public MenuPrincipal menuPrincipal;
         public DispatcherTimer minuterie;
+        public bool uneSeulefois = true;
         public MainWindow()
         {
             InitializeComponent();
@@ -50,6 +51,10 @@ namespace TracteurXtreme
         }
         private void Jeu(object? sender, EventArgs e)
         {
+            double posX = (canvasPiste.ActualWidth - rectTracteurRouge.Width)-(canvasPiste.ActualWidth/1.1);
+            double posY = (canvasPiste.ActualHeight - rectTracteurRouge.Height)-(canvasPiste.ActualHeight/2);
+            Canvas.SetLeft(rectTracteurRouge, posX);
+            Canvas.SetTop(rectTracteurRouge, posY);
             DeplacerTracteur(); // appel de la méthode pour les déplacements
 
         }
@@ -108,6 +113,15 @@ namespace TracteurXtreme
         }
         private void DeplacerTracteur()
         {
+            
+            if (uneSeulefois)
+            {
+                double posInitX = (canvasPiste.ActualWidth - rectTracteur.Width) - (canvasPiste.ActualWidth / 1.17);
+                double posInitY = (canvasPiste.ActualHeight - rectTracteur.Height) - (canvasPiste.ActualHeight / 2);
+                Canvas.SetLeft(rectTracteur, posInitX);
+                Canvas.SetTop(rectTracteur, posInitY);
+            }
+
             double posX = Canvas.GetLeft(rectTracteur);
             double posY = Canvas.GetTop(rectTracteur);
 
@@ -120,22 +134,30 @@ namespace TracteurXtreme
             // met à jour les positions X et Y
             if (minuterie.IsEnabled)
             {
-                if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width) // vérifie si X n'est pas hors largeur du canvas
-                { Canvas.SetLeft(rectTracteur, posX); }
-                if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width) // vérifie si Y n'est pas hors hauteur du canvas
-                { Canvas.SetTop(rectTracteur, posY); }
+                // vérifie si X n'est pas hors largeur du canvas
+                if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width)
+                {
+                    Canvas.SetLeft(rectTracteur, posX);
+                    uneSeulefois = false;
+                }
+                // vérifie si Y n'est pas hors hauteur du canvas
+                if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width)
+                {
+                    Canvas.SetTop(rectTracteur, posY);
+                    uneSeulefois = false;
+                }
             }
                 
         }
 
         private void Collision()
         {
-            tracteurHitbox = new Rect(Canvas.GetLeft(rectTracteur), Canvas.GetTop(rectTracteur), rectTracteur.Width, rectTracteur.Height);
-            murHitbox = new Rect(Canvas.GetLeft(murTest), Canvas.GetTop(murTest), murTest.Width, murTest.Height);
-            if (tracteurHitbox.IntersectsWith(murHitbox))
-            {
-                //vaDroite = false;
-            }
+            //tracteurHitbox = new Rect(Canvas.GetLeft(rectTracteur), Canvas.GetTop(rectTracteur), rectTracteur.Width, rectTracteur.Height);
+            //murHitbox = new Rect(Canvas.GetLeft(murTest), Canvas.GetTop(murTest), murTest.Width, murTest.Height);
+            //if (tracteurHitbox.IntersectsWith(murHitbox))
+            //{
+            //    //vaDroite = false;
+            //}
         }
     }
 }

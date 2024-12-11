@@ -27,7 +27,7 @@
             Canvas.Left="96"
             Canvas.Top="177"
             Width="50"
-            Height="60" HorizontalAlignment="Center" VerticalAlignment="Top">
+            Height="65" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Rectangle.Fill>
                 <ImageBrush x:Name="imgTracteur" ImageSource="/img/imgTracteurs/bas/tracteurNoirJoueur_bas.png" />
             </Rectangle.Fill>
@@ -38,7 +38,7 @@
             Canvas.Left="38"
             Canvas.Top="176"
             Width="50"
-            Height="70" HorizontalAlignment="Left" VerticalAlignment="Center">
+            Height="65" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Rectangle.Fill>
                 <ImageBrush x:Name="imgTracteur4" ImageSource="/img/imgTracteurs/bas/tracteurRouge_bas.png" />
             </Rectangle.Fill>

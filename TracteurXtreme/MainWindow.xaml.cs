@@ -36,6 +36,8 @@ namespace TracteurXtreme
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
             InitTimer();
+            Canvas.SetLeft(labChrono, canvasPiste.ActualHeight);
+            Canvas.SetTop(labChrono, 0);
 
         }
         private void InitTimer()

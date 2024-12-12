@@ -21,7 +21,7 @@ namespace TracteurXtreme
     public partial class MainWindow : Window
     {
         public int vitesseTracteurJoueur = 5;
-        public int vitesseTracteurAdversaire = 1; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
+        public int vitesseTracteurAdversaire = 5; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
@@ -102,6 +102,8 @@ namespace TracteurXtreme
         private void DeplacerJoueur()
         {
             //met le tracteur au bon endroit au demarrage
+            rectTracteur.Height = canvasPiste.ActualHeight / 12;
+            rectTracteur.Width = canvasPiste.ActualWidth / 28;
             if (uneSeulefois)
             {
                 double posInitX = (canvasPiste.ActualWidth - rectTracteur.Width) - (canvasPiste.ActualWidth / 1.17);
@@ -163,6 +165,9 @@ namespace TracteurXtreme
         }
         private void InitPositionAdversaire()
         {
+            rectTracteurRouge.Height = canvasPiste.ActualHeight / 12;
+            rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+            
             double posX = (canvasPiste.ActualWidth - rectTracteurRouge.Width) - (canvasPiste.ActualWidth / 1.1);
             double posY = (canvasPiste.ActualHeight - rectTracteurRouge.Height) - (canvasPiste.ActualHeight / 2);
             Canvas.SetLeft(rectTracteurRouge, posX);

@@ -37,6 +37,7 @@ namespace TracteurXtreme
             }
             else
             {
+                //this.DialogResult = true;
                 this.Hide();
             }
         }

@@ -21,7 +21,7 @@ namespace TracteurXtreme
     public partial class MainWindow : Window
     {
         public int vitesseTracteurJoueur = 5;
-        public int vitesseTracteurAdversaire = 2; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
+        public int vitesseTracteurAdversaire = 1; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
@@ -70,6 +70,7 @@ namespace TracteurXtreme
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             menuPrincipal.ShowDialog();
+            //menuPrincipal.DialogResult = false;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -173,6 +174,9 @@ namespace TracteurXtreme
             double pointDePiste_2 = (canvasPiste.ActualWidth / 2) - (rectTracteurRouge.Width / 2);
             double pointDePiste_3 = (canvasPiste.ActualHeight / 2.9) - (rectTracteurRouge.Height / 2.9);
             double pointDePiste_4 = (canvasPiste.ActualWidth/1.35) - (rectTracteurRouge.Width/1.35);
+            double pointDePiste_5 = (canvasPiste.ActualHeight / 1.9) - (rectTracteurRouge.Height / 1.9);
+            double pointDePiste_6 = (canvasPiste.ActualWidth / 1.6) - (rectTracteurRouge.Width / 1.6);
+            double pointDePiste_7 = (canvasPiste.ActualHeight / 1.35) - (rectTracteurRouge.Height / 1.35);
 
             DoubleAnimation[] animations = new DoubleAnimation[]
             {
@@ -202,6 +206,27 @@ namespace TracteurXtreme
                     From = pointDePiste_2,
                     To = pointDePiste_4,
                     Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_3,
+                    To = pointDePiste_5,
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_4,
+                    To = pointDePiste_6,
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_5,
+                    To = pointDePiste_7,
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
                 }
             };
 
@@ -213,17 +238,19 @@ namespace TracteurXtreme
             }
 
             // mise en place des targets d'animation
-            Storyboard.SetTarget(animations[0], rectTracteurRouge);
-            Storyboard.SetTargetProperty(animations[0], new PropertyPath("(Canvas.Top)"));
-
-            Storyboard.SetTarget(animations[1], rectTracteurRouge);
-            Storyboard.SetTargetProperty(animations[1], new PropertyPath("(Canvas.Left)"));
-
-            Storyboard.SetTarget(animations[2], rectTracteurRouge);
-            Storyboard.SetTargetProperty(animations[2], new PropertyPath("(Canvas.Top)"));
-
-            Storyboard.SetTarget(animations[3], rectTracteurRouge);
-            Storyboard.SetTargetProperty(animations[3], new PropertyPath("(Canvas.Left)"));
+            for (int i = 0; i < animations.Length; i ++)
+            {
+                if (i%2 == 0)
+                {
+                    Storyboard.SetTarget(animations[i], rectTracteurRouge);
+                    Storyboard.SetTargetProperty(animations[i], new PropertyPath("(Canvas.Top)"));
+                }
+                else
+                {
+                    Storyboard.SetTarget(animations[i], rectTracteurRouge);
+                    Storyboard.SetTargetProperty(animations[i], new PropertyPath("(Canvas.Left)"));
+                }
+            }
 
             // Commencer animations avec delais secondes
             for (int i = 0; i < animations.Length; i++)
@@ -233,6 +260,7 @@ namespace TracteurXtreme
 
             storyboard.Begin();
         }
+
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             InitPositionAdversaire();

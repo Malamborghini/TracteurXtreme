@@ -52,7 +52,7 @@ namespace TracteurXtreme
             Canvas.SetLeft(labChrono, canvasPiste.ActualHeight);
             Canvas.SetTop(labChrono, 0);
 
-            string cheminTab = "D:\\sae\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
+            string cheminTab = "P:\\S1.01\\Projet 2\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
             double tailleHauteurCanvas = canvasPiste.ActualWidth; // Largeur du Canvas
             ChargementTableau(cheminTab); // Appel de la méthode pour chargé le talbeau en 2D
@@ -97,16 +97,16 @@ namespace TracteurXtreme
         {
             switch (ChoixDecor)
             {
-                case "Piste Bulle Rose Xtreme Remastered":
+                case "cbNiveauRose":
                     canvasPiste.Background = new ImageBrush(Rose);
                     break;
-                case "Piste Demon du Feu Xtreme":
+                case "cbNiveauFeu":
                     canvasPiste.Background = new ImageBrush(Feu);
                     break;
-                case "Piste Ferme Original":
+                case "cbNiveauFerme":
                     canvasPiste.Background = new ImageBrush(Ferme);
                     break;
-                case "Piste Aventure Aquatique Xtreme":
+                case "cbNiveauAquatique":
                     canvasPiste.Background = new ImageBrush(Aquatique);
                     break;
             }

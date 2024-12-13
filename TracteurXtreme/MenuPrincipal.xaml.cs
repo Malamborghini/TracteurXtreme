@@ -39,12 +39,10 @@ namespace TracteurXtreme
             else
             {
                 //this.DialogResult = true;
+                string selectionNom = selectionChoix.Name;
+                MainWindow.ChoixDecor = selectionNom;
                 this.Hide();
-            }
-
-            ComboBoxItem typeItem = (ComboBoxItem)cbChoixNiveau.SelectedItem;
-            string value = typeItem.Content.ToString();
-            MainWindow.ChoixDecor = value;
+            }            
         }
     }
 }

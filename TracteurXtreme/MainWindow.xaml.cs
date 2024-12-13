@@ -185,13 +185,14 @@ namespace TracteurXtreme
         }
         private void DeplacerTracteurAdversaire()
         {
-            double pointDePiste_1 = (canvasPiste.ActualHeight /1.1) - (rectTracteurRouge.Height/1.1);
+            double pointDePiste_1 = (canvasPiste.ActualHeight /1.08) - (rectTracteurRouge.Height/1.08);
             double pointDePiste_2 = (canvasPiste.ActualWidth / 2) - (rectTracteurRouge.Width / 2);
             double pointDePiste_3 = (canvasPiste.ActualHeight / 2.9) - (rectTracteurRouge.Height / 2.9);
             double pointDePiste_4 = (canvasPiste.ActualWidth/1.35) - (rectTracteurRouge.Width/1.35);
             double pointDePiste_5 = (canvasPiste.ActualHeight / 1.9) - (rectTracteurRouge.Height / 1.9);
             double pointDePiste_6 = (canvasPiste.ActualWidth / 1.6) - (rectTracteurRouge.Width / 1.6);
-            double pointDePiste_7 = (canvasPiste.ActualHeight / 1.35) - (rectTracteurRouge.Height / 1.35);
+            double pointDePiste_7 = (canvasPiste.ActualHeight / 1.3) - (rectTracteurRouge.Height / 1.3);
+            double pointDePiste_8 = (canvasPiste.ActualWidth / 1.06) - (rectTracteurRouge.Width / 1.06);
 
             DoubleAnimation[] animations = new DoubleAnimation[]
             {
@@ -241,6 +242,13 @@ namespace TracteurXtreme
                 {
                     From = pointDePiste_5,
                     To = pointDePiste_7,
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_6,
+                    To = pointDePiste_8,
                     Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
                 }
             };

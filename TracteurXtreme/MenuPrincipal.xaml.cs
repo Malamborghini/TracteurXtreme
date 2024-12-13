@@ -19,6 +19,7 @@ namespace TracteurXtreme
     /// </summary>
     public partial class MenuPrincipal : Window
     {
+        public static ComboBoxItem selectionChoix;
         public MenuPrincipal()
         {
             InitializeComponent();
@@ -27,7 +28,7 @@ namespace TracteurXtreme
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             
-            ComboBoxItem selectionChoix = (ComboBoxItem)cbChoixNiveau.SelectedItem;
+            selectionChoix = (ComboBoxItem)cbChoixNiveau.SelectedItem;
 
             if (selectionChoix == null)
             {
@@ -40,6 +41,10 @@ namespace TracteurXtreme
                 //this.DialogResult = true;
                 this.Hide();
             }
+
+            ComboBoxItem typeItem = (ComboBoxItem)cbChoixNiveau.SelectedItem;
+            string value = typeItem.Content.ToString();
+            MainWindow.ChoixDecor = value;
         }
     }
 }

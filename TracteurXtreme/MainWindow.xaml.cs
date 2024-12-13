@@ -22,11 +22,12 @@ namespace TracteurXtreme
     public partial class MainWindow : Window
     {
         public int vitesseTracteurJoueur = 5;
-        public double vitesseTracteurAdversaire = 2; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
+        public double vitesseTracteurAdversaire = 2 ; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
         public Rect adversaireHitbox;
+        public Rect ligneArriveHitbox;
         public MenuPrincipal menuPrincipal;
         public DispatcherTimer minuterie;
         public Stopwatch chronometre;
@@ -35,10 +36,16 @@ namespace TracteurXtreme
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
+        public BitmapImage Rose { get; set; }
+        public BitmapImage Feu { get; set; }
+        public BitmapImage Ferme { get; set; }
+        public BitmapImage Aquatique { get; set; }
+        public static string ChoixDecor {  get; set; }
         public MainWindow()
         {
             InitializeComponent();
             InitBitmap();
+            InitDecor();
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
             InitTimer();
@@ -72,11 +79,37 @@ namespace TracteurXtreme
             tracteurHaut = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/haut/tracteurNoirJoueur_haut.png"));
             tracteurBas = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/bas/tracteurNoirJoueur_bas.png"));
         }
+        private void InitDecor()
+        {
+            Rose = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit1.png"));
+            Aquatique = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit2.png"));
+            Feu = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit3.png"));
+            Ferme = new BitmapImage(new Uri("pack://application:,,,/img/backPageAceuil.png"));
+        }
         private void Jeu(object? sender, EventArgs e)
         {
             AfficherChrono();
             InitPositionAdversaire();
             DeplacerJoueur();
+            ChangerNiveau();
+        }
+        private void ChangerNiveau()
+        {
+            switch (ChoixDecor)
+            {
+                case "Piste Bulle Rose Xtreme Remastered":
+                    canvasPiste.Background = new ImageBrush(Rose);
+                    break;
+                case "Piste Demon du Feu Xtreme":
+                    canvasPiste.Background = new ImageBrush(Feu);
+                    break;
+                case "Piste Ferme Original":
+                    canvasPiste.Background = new ImageBrush(Ferme);
+                    break;
+                case "Piste Aventure Aquatique Xtreme":
+                    canvasPiste.Background = new ImageBrush(Aquatique);
+                    break;
+            }
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -356,6 +389,33 @@ namespace TracteurXtreme
                     bas = false;
                 }
             }
+            //ligneArriveHitbox = new Rect(Canvas.GetLeft(rectLigneArrive), Canvas.GetTop(rectLigneArrive), rectLigneArrive.Width, rectLigneArrive.Height);
+            //if (tracteurHitbox.IntersectsWith(adversaireHitbox))
+            //{
+            //    if (droite)
+            //    {
+            //        Canvas.SetLeft(rectTracteur, Canvas.GetLeft(rectTracteur) - vitesseTracteurJoueur);
+            //        droite = false;
+            //    }
+
+            //    if (gauche)
+            //    {
+            //        Canvas.SetLeft(rectTracteur, Canvas.GetLeft(rectTracteur) + vitesseTracteurJoueur);
+            //        gauche = false;
+            //    }
+
+            //    if (haut)
+            //    {
+            //        Canvas.SetTop(rectTracteur, Canvas.GetTop(rectTracteur) + vitesseTracteurJoueur);
+            //        haut = false;
+            //    }
+
+            //    if (bas)
+            //    {
+            //        Canvas.SetTop(rectTracteur, Canvas.GetTop(rectTracteur) - vitesseTracteurJoueur);
+            //        bas = false;
+            //    }
+            //}
         }
         // Charger le fihcier en tableau 2D
         public static void ChargementTableau(string chemin)

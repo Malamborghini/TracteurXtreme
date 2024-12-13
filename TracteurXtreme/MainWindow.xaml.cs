@@ -166,7 +166,6 @@ namespace TracteurXtreme
                     uneSeulefois = false;
                 }
             }
-
             Collision();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -276,13 +275,11 @@ namespace TracteurXtreme
 
             storyboard.Begin();
         }
-
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             InitPositionAdversaire();
             DeplacerTracteurAdversaire();
         }
-
         private void Collision()
         {
             tracteurHitbox = new Rect(Canvas.GetLeft(rectTracteur), Canvas.GetTop(rectTracteur), rectTracteur.Width, rectTracteur.Height);

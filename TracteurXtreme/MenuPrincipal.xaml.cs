@@ -40,11 +40,10 @@ namespace TracteurXtreme
             {
                 //this.DialogResult = true;
                 this.Hide();
+                ComboBoxItem typeItem = (ComboBoxItem)cbChoixNiveau.SelectedItem;
+                string value = typeItem.Content.ToString();
+                MainWindow.ChoixDecor = value;
             }
-
-            ComboBoxItem typeItem = (ComboBoxItem)cbChoixNiveau.SelectedItem;
-            string value = typeItem.Content.ToString();
-            MainWindow.ChoixDecor = value;
         }
     }
 }

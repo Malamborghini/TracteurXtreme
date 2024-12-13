@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -22,7 +23,7 @@ namespace TracteurXtreme
     public partial class MainWindow : Window
     {
         public int vitesseTracteurJoueur = 5;
-        public double vitesseTracteurAdversaire = 2 ; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
+        public double vitesseTracteurAdversaire = 1 ; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
@@ -84,7 +85,7 @@ namespace TracteurXtreme
             Rose = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit1.png"));
             Aquatique = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit2.png"));
             Feu = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit3.png"));
-            Ferme = new BitmapImage(new Uri("pack://application:,,,/img/backPageAceuil.png"));
+            Ferme = new BitmapImage(new Uri("pack://application:,,,/img/piste_fondVert.png"));
         }
         private void Jeu(object? sender, EventArgs e)
         {
@@ -92,6 +93,12 @@ namespace TracteurXtreme
             InitPositionAdversaire();
             DeplacerJoueur();
             ChangerNiveau();
+            double posInitX = (canvasPiste.ActualWidth - rectLigneArrive.Width) - (canvasPiste.ActualWidth / 1.18);
+            double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.5);
+            Canvas.SetLeft(rectLigneArrive, posInitX);
+            Canvas.SetTop(rectLigneArrive, posInitY);
+            rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
+            rectLigneArrive.Width = canvasPiste.ActualWidth / 9.5;
         }
         private void ChangerNiveau()
         {
@@ -242,7 +249,7 @@ namespace TracteurXtreme
             double pointDePiste_8 = (canvasPiste.ActualWidth / 1.06) - (rectTracteurRouge.Width / 1.06);
             double pointDePiste_9 = (canvasPiste.ActualHeight / 16) - (rectTracteurRouge.Height / 16);
             double pointDePiste_10 = (canvasPiste.ActualWidth / 18) - (rectTracteurRouge.Width / 18);
-            double pointDePiste_11 = (canvasPiste.ActualHeight / 2.2) - (rectTracteurRouge.Height / 2.2);
+            double pointDePiste_11 = (canvasPiste.ActualHeight / 1.9) - (rectTracteurRouge.Height / 1.9);
 
             DoubleAnimation[] animations = new DoubleAnimation[]
             {
@@ -389,33 +396,11 @@ namespace TracteurXtreme
                     bas = false;
                 }
             }
-            //ligneArriveHitbox = new Rect(Canvas.GetLeft(rectLigneArrive), Canvas.GetTop(rectLigneArrive), rectLigneArrive.Width, rectLigneArrive.Height);
-            //if (tracteurHitbox.IntersectsWith(adversaireHitbox))
-            //{
-            //    if (droite)
-            //    {
-            //        Canvas.SetLeft(rectTracteur, Canvas.GetLeft(rectTracteur) - vitesseTracteurJoueur);
-            //        droite = false;
-            //    }
-
-            //    if (gauche)
-            //    {
-            //        Canvas.SetLeft(rectTracteur, Canvas.GetLeft(rectTracteur) + vitesseTracteurJoueur);
-            //        gauche = false;
-            //    }
-
-            //    if (haut)
-            //    {
-            //        Canvas.SetTop(rectTracteur, Canvas.GetTop(rectTracteur) + vitesseTracteurJoueur);
-            //        haut = false;
-            //    }
-
-            //    if (bas)
-            //    {
-            //        Canvas.SetTop(rectTracteur, Canvas.GetTop(rectTracteur) - vitesseTracteurJoueur);
-            //        bas = false;
-            //    }
-            //}
+            ligneArriveHitbox = new Rect(Canvas.GetLeft(rectLigneArrive), Canvas.GetTop(rectLigneArrive), rectLigneArrive.Width, rectLigneArrive.Height);
+            if (tracteurHitbox.IntersectsWith(ligneArriveHitbox))
+            {
+                Console.WriteLine("touche ligne arrivee");
+            }
         }
         // Charger le fihcier en tableau 2D
         public static void ChargementTableau(string chemin)

@@ -22,7 +22,7 @@ namespace TracteurXtreme
     public partial class MainWindow : Window
     {
         public int vitesseTracteurJoueur = 5;
-        public int vitesseTracteurAdversaire = 3; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
+        public double vitesseTracteurAdversaire = 2; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
         public Rect tracteurHitbox;
@@ -45,7 +45,7 @@ namespace TracteurXtreme
             Canvas.SetLeft(labChrono, canvasPiste.ActualHeight);
             Canvas.SetTop(labChrono, 0);
 
-            string cheminTab = "E:\\wpfMethode\\wpfMethode\\ciruict1pisteGrandissimo.txt"; // Chemin du fichier binaire du tracé du circuit
+            string cheminTab = "D:\\sae\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
             double tailleHauteurCanvas = canvasPiste.ActualWidth; // Largeur du Canvas
             ChargementTableau(cheminTab); // Appel de la méthode pour chargé le talbeau en 2D
@@ -199,14 +199,17 @@ namespace TracteurXtreme
         }
         private void DeplacerTracteurAdversaire()
         {
-            double pointDePiste_1 = (canvasPiste.ActualHeight /1.08) - (rectTracteurRouge.Height/1.08);
+            double pointDePiste_1 = (canvasPiste.ActualHeight /1.07) - (rectTracteurRouge.Height/1.07);
             double pointDePiste_2 = (canvasPiste.ActualWidth / 2) - (rectTracteurRouge.Width / 2);
             double pointDePiste_3 = (canvasPiste.ActualHeight / 2.9) - (rectTracteurRouge.Height / 2.9);
             double pointDePiste_4 = (canvasPiste.ActualWidth/1.35) - (rectTracteurRouge.Width/1.35);
-            double pointDePiste_5 = (canvasPiste.ActualHeight / 1.9) - (rectTracteurRouge.Height / 1.9);
-            double pointDePiste_6 = (canvasPiste.ActualWidth / 1.6) - (rectTracteurRouge.Width / 1.6);
+            double pointDePiste_5 = (canvasPiste.ActualHeight / 2.1) - (rectTracteurRouge.Height / 2.1);
+            double pointDePiste_6 = (canvasPiste.ActualWidth / 1.7) - (rectTracteurRouge.Width / 1.7);
             double pointDePiste_7 = (canvasPiste.ActualHeight / 1.3) - (rectTracteurRouge.Height / 1.3);
             double pointDePiste_8 = (canvasPiste.ActualWidth / 1.06) - (rectTracteurRouge.Width / 1.06);
+            double pointDePiste_9 = (canvasPiste.ActualHeight / 16) - (rectTracteurRouge.Height / 16);
+            double pointDePiste_10 = (canvasPiste.ActualWidth / 18) - (rectTracteurRouge.Width / 18);
+            double pointDePiste_11 = (canvasPiste.ActualHeight / 2.2) - (rectTracteurRouge.Height / 2.2);
 
             DoubleAnimation[] animations = new DoubleAnimation[]
             {
@@ -263,6 +266,27 @@ namespace TracteurXtreme
                 {
                     From = pointDePiste_6,
                     To = pointDePiste_8,
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_7,
+                    To = pointDePiste_9,
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_8,
+                    To = pointDePiste_10,
+                    Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
+                },
+
+                new DoubleAnimation
+                {
+                    From = pointDePiste_9,
+                    To = pointDePiste_11,
                     Duration = TimeSpan.FromSeconds(vitesseTracteurAdversaire)
                 }
             };

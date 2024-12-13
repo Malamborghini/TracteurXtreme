@@ -62,6 +62,7 @@
         </Label>
         <Label x:Name="labChrono" Content="00:00.000" Canvas.Left="422" Canvas.Top="20" Background="#FFDEB5B5" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <Rectangle x:Name="rectLigneArrive" Height="47" Canvas.Left="21" Stroke="Black" Canvas.Top="262" Width="141" Fill="#66000000"/>
+        <Label x:Name="labDepart" Content="" Canvas.Left="376" Canvas.Top="186" Height="152" Width="208"/>
 
 
     </Canvas>

@@ -29,18 +29,23 @@ namespace TracteurXtreme
         public Rect adversaireHitbox;
         public Rect ligneArriveHitbox;
         public MenuPrincipal menuPrincipal;
+
         public DispatcherTimer minuterie;
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
+        int secondes = 0;
+
         public bool uneSeulefois = true;
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
+
         public BitmapImage Rose { get; set; }
         public BitmapImage Feu { get; set; }
         public BitmapImage Ferme { get; set; }
         public BitmapImage Aquatique { get; set; }
         public static string ChoixDecor {  get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -49,6 +54,7 @@ namespace TracteurXtreme
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
             InitTimer();
+            InitTopDepart();
             Canvas.SetLeft(labChrono, canvasPiste.ActualHeight);
             Canvas.SetTop(labChrono, 0);
 
@@ -66,6 +72,27 @@ namespace TracteurXtreme
             minuterie.Interval = TimeSpan.FromMilliseconds(16);
             minuterie.Tick += Jeu;
             minuterie.Start();
+        }
+        private void InitTopDepart()
+        {
+            minuterie = new DispatcherTimer();
+            minuterie.Interval = TimeSpan.FromSeconds(1);
+            minuterie.Tick += Minuterie_Tick;
+            minuterie.Start();
+        }
+        private void Minuterie_Tick(object sender, EventArgs e)
+        {
+            secondes++;
+            if (secondes == 1) { labDepart.Content = "3"; }
+            if (secondes == 2) { labDepart.Content = "2"; }
+            if (secondes == 3) { labDepart.Content = "1"; }
+            if (secondes == 4) { labDepart.Content = "Go"; }
+            if (secondes > 4) 
+            {
+                labDepart.Content = "";
+                minuterie.Stop();
+                InitTimer();               
+            }           
         }
         private void AfficherChrono()
         {

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Security.Policy;
 using System.Text;
 using System.Windows;
@@ -7,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Converters;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -29,6 +31,9 @@ namespace TracteurXtreme
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
         public bool uneSeulefois = true;
+        public double tracteurXpixel;
+        public double tracteurYpixel;
+        static int[,] tabCircuit;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,6 +44,12 @@ namespace TracteurXtreme
             Canvas.SetLeft(labChrono, canvasPiste.ActualHeight);
             Canvas.SetTop(labChrono, 0);
 
+            string chemin = "P:\\SAE_1.01\\racing\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
+            double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
+            double tailleHauteurCanvas = canvasPiste.ActualWidth; // Largeur du Canvas
+            ChargementTableau(chemin); // Appel de la méthode pour chargé le talbeau en 2D
+            EstSurLeCircuit(tabCircuit, tailleHauteurCanvas, taileLargeurCanvas, tracteurXpixel, tracteurYpixel); // Appel méthode parce que j'ai eu un message qui m'a fait peur quand je l'ai enlevé 
+            this.Loaded += (s, e) => InitialiserCanvas(); //quand le main aura fini de charger execute la méthode InitialiserCanvas (s = sender, e = args)
         }
         private void InitTimer()
         {
@@ -159,7 +170,9 @@ namespace TracteurXtreme
                     uneSeulefois = false;
                 }
             }
-                
+            tracteurXpixel = Canvas.GetLeft(rectTracteur);
+            tracteurYpixel = Canvas.GetTop(rectTracteur);
+            EstSurLeCircuit(tabCircuit, canvasPiste.ActualWidth, canvasPiste.ActualHeight, tracteurXpixel, tracteurYpixel);
         }
 
         private void Collision()
@@ -170,6 +183,73 @@ namespace TracteurXtreme
             //{
             //    //vaDroite = false;
             //}
+        }
+
+        // Transforme la fichier en tableau 2D
+        public static void ChargementTableau(string chemin)
+        {
+            string[] ligne = File.ReadAllLines(chemin); // Lis chaque ligne du fichier
+            int colone = ligne.Length;  // Détermine le nombre de colonnes
+            int lignes = ligne[0].Length; // Détermine le nombre de lignes
+
+            tabCircuit = new int[colone, lignes]; // Initialise un tableau 2D avec le bon nb de lignes et de colonnes
+
+            for (int i = 0; i < colone; i++)
+            {
+                for (int j = 0; j < lignes; j++)
+                {
+                    tabCircuit[i, j] = ligne[i][j] - '0';
+                }
+            }
+        }
+
+        // Verifie si le tracteur se trouve sur le circuit
+        private static bool EstSurLeCircuit(int[,] tabCircuit, double taileLargeurCanvas, double tailleHauteurCanvas, double tracteurXPixel, double tracteurYPixel)
+        {
+            if (taileLargeurCanvas == 0 || tailleHauteurCanvas == 0) // Vérifie si le canvas n'est pas initialisé
+            {
+                Console.WriteLine("Erreur : Le canvas n'a pas encore été initialisé correctement.");
+                return false;
+            }
+
+            int nbColonne = tabCircuit.GetLength(1); // Détermine le nb de colonnes dans le tableau 
+            int nbLignes = tabCircuit.GetLength(0);  // Détermine le nb de lignes dans le tableau
+
+            double tailleLargeurPixel = taileLargeurCanvas / nbColonne; // Calcule la largeur d'une case en pixel
+            double tailleHauteurPixel = tailleHauteurCanvas / nbLignes; // Idem pour la hauteur
+
+            int indiceColonne = (int)(tracteurXPixel / tailleLargeurPixel); // Calcule l'indice de colonne pour la position X
+            int indiceLigne = (int)(tracteurYPixel / tailleHauteurPixel); // Calcule l'indice de ligne pour la position Y
+
+            if (indiceColonne < 0 || indiceColonne >= nbColonne || indiceLigne < 0 || indiceLigne >= nbLignes) // Vérifie si les indices sont en dehords des limites du tableau 
+            {
+                Console.WriteLine("Erreur : Le tracteur est en dehors des limites du tableau.");
+                return false;
+            }
+
+            if (MainWindow.tabCircuit[indiceLigne, indiceColonne] == 1) // Vérifie si la case du talbeau de la position du tracteur est un 1
+            {
+                Console.WriteLine("Vous êtes sur le circuit");
+                return true;
+
+            }
+            else
+            {
+                Console.WriteLine("pas sur le circuit");
+                return false;
+            }
+        }
+
+        private void InitialiserCanvas()
+        {
+            double taileLargeurCanvas = canvasPiste.ActualHeight; // Récupère la hauteur du Canvas
+            double tailleHauteurCanvas = canvasPiste.ActualWidth; // Idem pour la largeur 
+
+            if (taileLargeurCanvas == 0 || tailleHauteurCanvas == 0) // Vérifie si le canvas est initialisé
+            {
+                Console.WriteLine("Erreur : Le canvas n'a pas encore été initialisé correctement.");
+                return;
+            }
         }
     }
 }

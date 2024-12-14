@@ -15,6 +15,9 @@
     <None Remove="img\backPageAccueil.png" />
     <None Remove="img\circuit1.png" />
     <None Remove="img\circuit3.png" />
+    <None Remove="img\decorNiveau\pisteAquatique.jpg" />
+    <None Remove="img\decorNiveau\pisteBulleRose.jpg" />
+    <None Remove="img\decorNiveau\pisteFeu.jpg" />
     <None Remove="img\imgTracteurs\bas\tracteurBleu_bas.png" />
     <None Remove="img\imgTracteurs\bas\tracteurJaune_bas.png" />
     <None Remove="img\imgTracteurs\bas\tracteurNoirJoueur_bas.png" />
@@ -52,6 +55,9 @@
     <Resource Include="img\backPageAccueil.png" />
     <Resource Include="img\circuit1.png" />
     <Resource Include="img\circuit3.png" />
+    <Resource Include="img\decorNiveau\pisteAquatique.jpg" />
+    <Resource Include="img\decorNiveau\pisteBulleRose.jpg" />
+    <Resource Include="img\decorNiveau\pisteFeu.jpg" />
     <Resource Include="img\imgTracteurs\bas\tracteurBleu_bas.png" />
     <Resource Include="img\imgTracteurs\bas\tracteurJaune_bas.png" />
     <Resource Include="img\imgTracteurs\bas\tracteurNoirJoueur_bas.png" />

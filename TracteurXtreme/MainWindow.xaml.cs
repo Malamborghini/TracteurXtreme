@@ -25,22 +25,21 @@ namespace TracteurXtreme
         public int vitesseTracteurJoueur = 5;
         public double vitesseTracteurAdversaire = 1 ; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
-        private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut;
+        private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut, 
+                                   tracteurRougeDroite, tracteurRougeGauche, tracteurRougeBas, tracteurRougeHaut;
         public Rect tracteurHitbox;
         public Rect adversaireHitbox;
         public Rect ligneArriveHitbox;
         public MenuPrincipal menuPrincipal;
-
         public DispatcherTimer minuterie;
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
         int secondes = 0;
-
         public bool uneSeulefois = true;
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
-
+        public int changerImageTracteurRouge = 1;
         public BitmapImage Rose { get; set; }
         public BitmapImage Feu { get; set; }
         public BitmapImage Ferme { get; set; }
@@ -59,7 +58,7 @@ namespace TracteurXtreme
             Canvas.SetLeft(labChrono, canvasPiste.ActualHeight);
             Canvas.SetTop(labChrono, 0);
 
-            string cheminTab = "P:\\S1.01\\Projet 2\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
+            string cheminTab = "D:\\C#\\IUT\\sae_tracteur\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
             double tailleHauteurCanvas = canvasPiste.ActualWidth; // Largeur du Canvas
             ChargementTableau(cheminTab); // Appel de la méthode pour chargé le talbeau en 2D
@@ -106,12 +105,17 @@ namespace TracteurXtreme
             tracteurDroite = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/droite/tracteurNoirJoueur_droite.png"));
             tracteurHaut = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/haut/tracteurNoirJoueur_haut.png"));
             tracteurBas = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/bas/tracteurNoirJoueur_bas.png"));
+
+            tracteurRougeGauche = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/gauche/tracteurRouge_gauche.png"));
+            tracteurRougeDroite = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/droite/tracteurRouge_droite.png"));
+            tracteurRougeHaut = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/haut/tracteurRouge_haut.png"));
+            tracteurRougeBas = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/bas/tracteurRouge_bas.png"));
         }
         private void InitDecor()
         {
-            Rose = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit1.png"));
-            Aquatique = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit2.png"));
-            Feu = new BitmapImage(new Uri("pack://application:,,,/img/backCircuit3.png"));
+            Rose = new BitmapImage(new Uri("pack://application:,,,/img/decorNiveau/pisteBulleRose.jpg"));
+            Aquatique = new BitmapImage(new Uri("pack://application:,,,/img/decorNiveau/pisteAquatique.jpg"));
+            Feu = new BitmapImage(new Uri("pack://application:,,,/img/decorNiveau/pisteFeu.jpg"));
             Ferme = new BitmapImage(new Uri("pack://application:,,,/img/piste_fondVert.png"));
         }
         private void Jeu(object? sender, EventArgs e)
@@ -154,7 +158,6 @@ namespace TracteurXtreme
         {
             if (e.Key == Key.Left) { gauche = true; }  // flèche gauche pressée
             if (e.Key == Key.Right) { droite = true; }// flèche droite pressée
-
             if (e.Key == Key.Up) { haut = true; } // flèche haut pressée
             if (e.Key == Key.Down) { bas = true; } // flèche bas pressée
 
@@ -387,6 +390,27 @@ namespace TracteurXtreme
             }
 
             storyboard.Begin();
+
+            //  ANIMATION TRACTEUR ROUGE
+            switch (changerImageTracteurRouge)
+            {
+                case 1:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
+                    changerImageTracteurRouge++;
+                    break;
+                case 2:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
+                    changerImageTracteurRouge++;
+                    break;
+                case 3:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
+                    changerImageTracteurRouge++;
+                    break;
+            }
+            if (changerImageTracteurRouge > 3)
+            {
+                changerImageTracteurRouge = 1;
+            }
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {

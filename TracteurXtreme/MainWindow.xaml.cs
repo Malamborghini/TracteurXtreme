@@ -40,7 +40,7 @@ namespace TracteurXtreme
         public double tracteurYPixel;
         static int[,] tabCircuit;
         public long lastImageChangeTime = 0;
-        public int changerImageTracteurRouge = 1;
+        public int changerImageTracteurRouge = 0;
         public BitmapImage Rose { get; set; }
         public BitmapImage Feu { get; set; }
         public BitmapImage Ferme { get; set; }
@@ -66,6 +66,9 @@ namespace TracteurXtreme
         }
         private void InitTimer()
         {
+            //imgFillTracteurRouge.ImageSource = tracteurRougeBas; // Start with case 1 image
+            //changerImageTracteurRouge = 0;
+
             chronometre = Stopwatch.StartNew(); // mesurer le temps écoulé
             minuterie = new DispatcherTimer();
             minuterie.Interval = TimeSpan.FromMilliseconds(16);
@@ -148,42 +151,43 @@ namespace TracteurXtreme
             {
                 case 1:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
+                    if (chronometre.ElapsedMilliseconds - lastImageChangeTime >= 2000)
+                    {
+                        imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
+                    }
                     break;
                 case 2:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
+                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
                     break;
                 case 3:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
+                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
                     break;
                 case 4:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
+                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
                     break;
                 case 5:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
+                    imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
                     break;
                 case 6:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
-                    break;
-                case 7:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
                     break;
-                case 8:
+                case 7:
                     imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
                     break;
-                case 9:
+                case 8:
                     imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
                     break;
-                case 10:
+                case 9:
                     imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
                     break;
-                case 11:
+                case 10:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
                     break;
             }
             changerImageTracteurRouge++;
-            if (changerImageTracteurRouge > 11)
+            if (changerImageTracteurRouge > 10)
             {
-                changerImageTracteurRouge = 1;
+                changerImageTracteurRouge = 0;
             }
         }
         private void ChangerNiveau()

@@ -20,10 +20,22 @@
             <ImageBrush ImageSource="/img/piste_fondVert.png" />
         </Canvas.Background>
         <Button
-            Canvas.Left="52"
-            Canvas.Top="31"
+            Canvas.Left="19"
+            Canvas.Top="11"
             Click="Button_Click"
-            Content="retour au menu" />
+            Content="Retour au menu" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="120">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0.46" Color="#FFD61414" />
+                    <GradientStop Offset="1" Color="Black" />
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="7" />
+                </Style>
+            </Button.Resources>
+        </Button>
         <Rectangle
             x:Name="rectTracteur"
             Canvas.Left="96"
@@ -60,7 +72,7 @@
                 <DropShadowEffect />
             </Label.Effect>
         </Label>
-        <Label x:Name="labChrono" Content="00:00.000" Canvas.Left="422" Canvas.Top="20" Background="#FFDEB5B5" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label x:Name="labChrono" Content="00:00.000" Canvas.Left="443" Background="#FFDEB5B5" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="Bold"/>
         <Rectangle x:Name="rectLigneArrive" Height="47" Canvas.Left="21" Stroke="Black" Canvas.Top="262" Width="141" Fill="#66000000"/>
         <Label x:Name="labDepart" Content="" Canvas.Left="376" Canvas.Top="186" Height="152" Width="208"/>
 

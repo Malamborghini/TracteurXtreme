@@ -54,9 +54,7 @@ namespace TracteurXtreme
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
             InitTimer();
-            InitTopDepart();
-            Canvas.SetLeft(labChrono, canvasPiste.ActualHeight);
-            Canvas.SetTop(labChrono, 0);
+            //InitTopDepart();
 
             string cheminTab = "D:\\C#\\IUT\\sae_tracteur\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
@@ -73,29 +71,33 @@ namespace TracteurXtreme
             minuterie.Tick += Jeu;
             minuterie.Start();
         }
-        private void InitTopDepart()
-        {
-            minuterie = new DispatcherTimer();
-            minuterie.Interval = TimeSpan.FromSeconds(1);
-            minuterie.Tick += Minuterie_Tick;
-            minuterie.Start();
-        }
-        private void Minuterie_Tick(object sender, EventArgs e)
-        {
-            secondes++;
-            if (secondes == 1) { labDepart.Content = "3"; }
-            if (secondes == 2) { labDepart.Content = "2"; }
-            if (secondes == 3) { labDepart.Content = "1"; }
-            if (secondes == 4) { labDepart.Content = "Go"; }
-            if (secondes > 4) 
-            {
-                labDepart.Content = "";
-                minuterie.Stop();
-                InitTimer();               
-            }           
-        }
+        //private void InitTopDepart()
+        //{
+        //    minuterie = new DispatcherTimer();
+        //    minuterie.Interval = TimeSpan.FromSeconds(1);
+        //    minuterie.Tick += Minuterie_Tick;
+        //    minuterie.Start();
+        //}
+        //private void Minuterie_Tick(object sender, EventArgs e)
+        //{
+        //    secondes++;
+        //    if (secondes == 1) { labDepart.Content = "3"; }
+        //    if (secondes == 2) { labDepart.Content = "2"; }
+        //    if (secondes == 3) { labDepart.Content = "1"; }
+        //    if (secondes == 4) { labDepart.Content = "Go"; }
+        //    if (secondes > 4) 
+        //    {
+        //        labDepart.Content = "";
+        //        minuterie.Stop();
+        //        InitTimer();               
+        //    }           
+        //}
         private void AfficherChrono()
         {
+            double emplacementChrono = (canvasPiste.ActualWidth / 2);
+            Canvas.SetLeft(labChrono, emplacementChrono);
+            Canvas.SetTop(labChrono, 0);
+
             tempsEcoule = chronometre.Elapsed; // récupère temps écoulé
             labChrono.Content = tempsEcoule.ToString(@"mm\:ss\.fff"); // format chrono (minutes : secondes : millisecondes)
         }
@@ -162,7 +164,7 @@ namespace TracteurXtreme
             if (e.Key == Key.Down) { bas = true; } // flèche bas pressée
 
             // mettre en pause
-            if (e.Key == Key.Space)
+            if (e.Key == Key.Space || e.Key == Key.P)
             {
                 if (minuterie.IsEnabled) { minuterie.Stop(); }
                 else { minuterie.Start(); }
@@ -395,19 +397,23 @@ namespace TracteurXtreme
             switch (changerImageTracteurRouge)
             {
                 case 1:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
+                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
                     changerImageTracteurRouge++;
                     break;
                 case 2:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
+                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
                     changerImageTracteurRouge++;
                     break;
                 case 3:
                     imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
                     changerImageTracteurRouge++;
                     break;
+                case 4:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
+                    changerImageTracteurRouge++;
+                    break;
             }
-            if (changerImageTracteurRouge > 3)
+            if (changerImageTracteurRouge > 4)
             {
                 changerImageTracteurRouge = 1;
             }

@@ -25,7 +25,7 @@ namespace TracteurXtreme
         public int vitesseTracteurJoueur = 4;
         public double vitesseTracteurAdversaire = 2 ; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
-        private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut, 
+        private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut,
                                    tracteurRougeDroite, tracteurRougeGauche, tracteurRougeBas, tracteurRougeHaut;
         public Rect tracteurHitbox;
         public Rect adversaireHitbox;
@@ -41,6 +41,8 @@ namespace TracteurXtreme
         static int[,] tabCircuit;
         public long lastImageChangeTime = 0;
         public int changerImageTracteurRouge = 0;
+        Rectangle bonusDiesel, bonusUneRoue, bonusDesRoues, bonusCollecteChamps;
+        ImageBrush bonusRoueImg, bonusDesRouesImg, bonusDieselImg, bonusChampsImg;
         public BitmapImage Rose { get; set; }
         public BitmapImage Feu { get; set; }
         public BitmapImage Ferme { get; set; }
@@ -56,6 +58,16 @@ namespace TracteurXtreme
             menuPrincipal.ShowDialog();
             InitTimer();
             //InitTopDepart();
+
+            //Rectangle bonusDiesel = new Rectangle();
+            //bonusDiesel.Width = 100;
+            //bonusDiesel.Height = 100;
+            //bonusDiesel.Fill = Brushes.Green;
+            //bonusDiesel.Stroke = Brushes.Red;
+            //bonusDiesel.StrokeThickness = 2;
+            //bonusDiesel.Name = "rectBonusDiesel";
+            //Canvas.SetTop(bonusDiesel, 0);
+            //Canvas.SetLeft(bonusDiesel, 0);
 
             string cheminTab = "D:\\C#\\IUT\\sae_tracteur\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
@@ -116,6 +128,15 @@ namespace TracteurXtreme
             tracteurRougeDroite = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/droite/tracteurRouge_droite.png"));
             tracteurRougeHaut = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/haut/tracteurRouge_haut.png"));
             tracteurRougeBas = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/bas/tracteurRouge_bas.png"));
+
+            bonusRoueImg = new ImageBrush();
+            bonusDesRouesImg = new ImageBrush();
+            bonusDieselImg = new ImageBrush();
+            bonusChampsImg = new ImageBrush();
+            bonusRoueImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_1roue.png"));
+            bonusDesRouesImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_desRoues.png"));
+            bonusDieselImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_diesel.png"));
+            bonusChampsImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_champs.png"));
         }
         private void InitDecor()
         {
@@ -152,14 +173,34 @@ namespace TracteurXtreme
                 case "cbNiveauRose":
                     canvasPiste.Background = new ImageBrush(Rose);
                     vitesseTracteurJoueur = 10;
+
+                    bonusDiesel = new Rectangle();
+                    bonusDiesel.Width = 50;
+                    bonusDiesel.Height = 50;
+                    //bonusDiesel.Fill = Brushes.Green;
+                    //bonusDiesel.Stroke = Brushes.Red;
+                    ImageBrush imageBrush = new ImageBrush();
+                    imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_diesel.png"));
+                    bonusDiesel.Fill = imageBrush;
+                    bonusDiesel.StrokeThickness = 2;
+                    bonusDiesel.Name = "rectBonusDiesel";
+                    Thickness margin = bonusDiesel.Margin;
+                    margin.Left = 50;
+                    bonusDiesel.Margin = margin;
+                    canvasPiste.Children.Add(bonusDiesel);
+                    Canvas.SetTop(bonusDiesel, canvasPiste.ActualHeight/17);
+                    Canvas.SetLeft(bonusDiesel, canvasPiste.ActualWidth/2);
+
+
                     break;
                 case "cbNiveauFeu":
                     canvasPiste.Background = new ImageBrush(Feu);
-                    vitesseTracteurJoueur = 1;
+                    vitesseTracteurJoueur = 2;
                     break;
                 case "cbNiveauFerme":
                     canvasPiste.Background = new ImageBrush(Ferme);
                     vitesseTracteurJoueur = 5;
+
                     break;
                 case "cbNiveauAquatique":
                     canvasPiste.Background = new ImageBrush(Aquatique);

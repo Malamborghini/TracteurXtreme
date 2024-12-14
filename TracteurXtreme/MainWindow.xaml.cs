@@ -22,7 +22,7 @@ namespace TracteurXtreme
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int vitesseTracteurJoueur = 5;
+        public int vitesseTracteurJoueur = 4;
         public double vitesseTracteurAdversaire = 2 ; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut, 
@@ -35,7 +35,7 @@ namespace TracteurXtreme
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
         int secondes = 0;
-        public bool uneSeulefois = true;
+        public bool uneSeulefois = true, jeuEnPause = false;
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
@@ -145,72 +145,32 @@ namespace TracteurXtreme
             rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
             rectLigneArrive.Width = canvasPiste.ActualWidth / 9.5;
         }
-        private void ChangeTracteurImage()
-        {
-            switch (changerImageTracteurRouge)
-            {
-                case 1:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    if (chronometre.ElapsedMilliseconds - lastImageChangeTime >= 2000)
-                    {
-                        imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
-                    }
-                    break;
-                case 2:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
-                    break;
-                case 3:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
-                    break;
-                case 4:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    break;
-                case 5:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
-                    break;
-                case 6:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    break;
-                case 7:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
-                    break;
-                case 8:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
-                    break;
-                case 9:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
-                    break;
-                case 10:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    break;
-            }
-            changerImageTracteurRouge++;
-            if (changerImageTracteurRouge > 10)
-            {
-                changerImageTracteurRouge = 0;
-            }
-        }
         private void ChangerNiveau()
         {
             switch (ChoixDecor)
             {
                 case "cbNiveauRose":
                     canvasPiste.Background = new ImageBrush(Rose);
+                    vitesseTracteurJoueur = 10;
                     break;
                 case "cbNiveauFeu":
                     canvasPiste.Background = new ImageBrush(Feu);
+                    vitesseTracteurJoueur = 1;
                     break;
                 case "cbNiveauFerme":
                     canvasPiste.Background = new ImageBrush(Ferme);
+                    vitesseTracteurJoueur = 5;
                     break;
                 case "cbNiveauAquatique":
                     canvasPiste.Background = new ImageBrush(Aquatique);
+                    vitesseTracteurJoueur = 3;
                     break;
             }
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             menuPrincipal.ShowDialog();
+            jeuEnPause = true;
             //menuPrincipal.DialogResult = false;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -220,13 +180,16 @@ namespace TracteurXtreme
             if (e.Key == Key.Up) { haut = true; } // flèche haut pressée
             if (e.Key == Key.Down) { bas = true; } // flèche bas pressée
 
+            if (jeuEnPause) { minuterie.Stop(); }
+            else { minuterie.Start(); }
+
             // mettre en pause
             if (e.Key == Key.Space || e.Key == Key.P)
             {
-                if (minuterie.IsEnabled) { minuterie.Stop(); }
-                else { minuterie.Start(); }
+                if (!jeuEnPause) { jeuEnPause = true; }
+                else { jeuEnPause = false; }
             }
-            if (!minuterie.IsEnabled)
+            if (jeuEnPause)
             {
                 labPauseJeu.Content = "Pause";
             }
@@ -310,11 +273,6 @@ namespace TracteurXtreme
             tracteurXPixel = Canvas.GetLeft(rectTracteur);
             tracteurYPixel = Canvas.GetTop(rectTracteur);
             EstSurLeCircuit(tabCircuit, canvasPiste.ActualWidth, canvasPiste.ActualHeight, tracteurXPixel, tracteurYPixel);
-        }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            InitPositionAdversaire();
-            DeplacerTracteurAdversaire();
         }
         private void InitPositionAdversaire()
         {
@@ -447,38 +405,86 @@ namespace TracteurXtreme
             {
                 animations[i].BeginTime = TimeSpan.FromSeconds((i+1) * vitesseTracteurAdversaire);
             }
-
+            
             storyboard.Begin();
-
-            //  ANIMATION TRACTEUR ROUGE
+            //if (jeuEnPause) { storyboard.Pause(); }
+        }
+        private void ChangeTracteurImage()
+        {
             switch (changerImageTracteurRouge)
             {
                 case 1:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    changerImageTracteurRouge++;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    if (chronometre.ElapsedMilliseconds - lastImageChangeTime >= 2000)
+                    {
+                        imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
+                        rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                        rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                    }
                     break;
                 case 2:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
-                    changerImageTracteurRouge++;
+                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
                 case 3:
-                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
-                    changerImageTracteurRouge++;
+                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
                     break;
                 case 4:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    break;
+                case 5:
                     imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
-                    changerImageTracteurRouge++;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                    break;
+                case 6:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    break;
+                case 7:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                    break;
+                case 8:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    break;
+                case 9:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                    break;
+                case 10:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
             }
-            if (changerImageTracteurRouge > 4)
+            changerImageTracteurRouge++;
+            if (changerImageTracteurRouge > 10)
             {
-                changerImageTracteurRouge = 1;
+                changerImageTracteurRouge = 0;
             }
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             InitPositionAdversaire();
-            DeplacerTracteurAdversaire();
+            DeplacerTracteurAdversaire(); 
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitPositionAdversaire();
+            DeplacerTracteurAdversaire(); 
         }
         private void Collision()
         {
@@ -491,19 +497,16 @@ namespace TracteurXtreme
                     Canvas.SetLeft(rectTracteur, Canvas.GetLeft(rectTracteur) - vitesseTracteurJoueur);
                     droite = false;
                 }
-
                 if (gauche)
                 {
                     Canvas.SetLeft(rectTracteur, Canvas.GetLeft(rectTracteur) + vitesseTracteurJoueur);
                     gauche = false;
                 }
-
                 if (haut)
                 {
                     Canvas.SetTop(rectTracteur, Canvas.GetTop(rectTracteur) + vitesseTracteurJoueur);
                     haut = false;
                 }
-
                 if (bas)
                 {
                     Canvas.SetTop(rectTracteur, Canvas.GetTop(rectTracteur) - vitesseTracteurJoueur);

@@ -138,6 +138,8 @@ namespace TracteurXtreme
         }
         private void Jeu(object? sender, EventArgs e)
         {
+            if (jeuEnPause) return; // Skip game logic when paused
+
             // Measure elapsed time since last image change
             long elapsedTime = chronometre.ElapsedMilliseconds;
             if (elapsedTime - lastImageChangeTime >= 2000) // 2000 ms = 2 seconds
@@ -216,21 +218,47 @@ namespace TracteurXtreme
             else { minuterie.Start(); }
 
             // mettre en pause
+            //if (e.Key == Key.Space || e.Key == Key.P)
+            //{
+            //    jeuEnPause = !jeuEnPause;
+
+            //    if (jeuEnPause)
+            //    {
+            //        labPauseJeu.Content = "Pause";
+            //        minuterie.Stop();
+            //        adversaireStoryboard?.Pause(); // Pause the adversaire storyboard
+            //    }
+            //    else
+            //    {
+            //        labPauseJeu.Content = "";
+            //        minuterie.Start();
+            //        adversaireStoryboard?.Resume(); // Resume the adversaire storyboard
+            //    }
+            //}
+
             if (e.Key == Key.Space || e.Key == Key.P)
             {
-                jeuEnPause = !jeuEnPause;
-
-                if (jeuEnPause)
+                if (!jeuEnPause)
                 {
-                    labPauseJeu.Content = "Pause";
+                    jeuEnPause = true;
                     minuterie.Stop();
                     adversaireStoryboard?.Pause(); // Pause the adversaire storyboard
+                    if (chronometre.IsRunning)
+                    {
+                        chronometre.Stop(); // Stop the timer for image changes
+                    }
+                    labPauseJeu.Content = "Pause";
                 }
                 else
                 {
-                    labPauseJeu.Content = "";
+                    jeuEnPause = false;
                     minuterie.Start();
                     adversaireStoryboard?.Resume(); // Resume the adversaire storyboard
+                    if (!chronometre.IsRunning)
+                    {
+                        chronometre.Start(); // Resume the timer for image changes
+                    }
+                    labPauseJeu.Content = "";
                 }
             }
         }

@@ -96,9 +96,9 @@
             BorderBrush="#FF9D0F0F"
             Foreground="#FF9D0F0F">
             <ComboBoxItem x:Name="cbNiveauRose" Content="Piste Bulle Rose Xtreme Remastered (Facile)" />
-            <ComboBoxItem x:Name="cbNiveauFeu" Content="Piste Demon du Feu Xtreme (Infernal)" />
             <ComboBoxItem x:Name="cbNiveauFerme" Content="Piste Ferme Original (Normal)" />
             <ComboBoxItem x:Name="cbNiveauAquatique" Content="Piste Aventure Aquatique Xtreme (Difficile)" />
+            <ComboBoxItem x:Name="cbNiveauFeu" Content="Piste Demon du Feu Xtreme (Infernal)" />
         </ComboBox>
 
     </Grid>

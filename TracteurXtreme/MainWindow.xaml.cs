@@ -35,14 +35,15 @@ namespace TracteurXtreme
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
         int secondes = 0;
-        public bool uneSeulefois = true, jeuEnPause = false;
+        public bool uneSeulefois = true, jeuEnPause = false, jeuTermine;
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
         public long lastImageChangeTime = 0;
-        public int changerImageTracteurRouge = 0;
+        public int changerImageTracteurRouge = 0, nbToucheLigneArrive = 0;
         Rectangle bonusDiesel, bonusUneRoue, bonusDesRoues, bonusCollecteChamps;
         ImageBrush bonusRoueImg, bonusDesRouesImg, bonusDieselImg, bonusChampsImg;
+        private Storyboard? adversaireStoryboard;
         public BitmapImage Rose { get; set; }
         public BitmapImage Feu { get; set; }
         public BitmapImage Ferme { get; set; }
@@ -58,16 +59,6 @@ namespace TracteurXtreme
             menuPrincipal.ShowDialog();
             InitTimer();
             //InitTopDepart();
-
-            //Rectangle bonusDiesel = new Rectangle();
-            //bonusDiesel.Width = 100;
-            //bonusDiesel.Height = 100;
-            //bonusDiesel.Fill = Brushes.Green;
-            //bonusDiesel.Stroke = Brushes.Red;
-            //bonusDiesel.StrokeThickness = 2;
-            //bonusDiesel.Name = "rectBonusDiesel";
-            //Canvas.SetTop(bonusDiesel, 0);
-            //Canvas.SetLeft(bonusDiesel, 0);
 
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
             double tailleHauteurCanvas = canvasPiste.ActualWidth; // Largeur du Canvas
@@ -227,14 +218,21 @@ namespace TracteurXtreme
             // mettre en pause
             if (e.Key == Key.Space || e.Key == Key.P)
             {
-                if (!jeuEnPause) { jeuEnPause = true; }
-                else { jeuEnPause = false; }
+                jeuEnPause = !jeuEnPause;
+
+                if (jeuEnPause)
+                {
+                    labPauseJeu.Content = "Pause";
+                    minuterie.Stop();
+                    adversaireStoryboard?.Pause(); // Pause the adversaire storyboard
+                }
+                else
+                {
+                    labPauseJeu.Content = "";
+                    minuterie.Start();
+                    adversaireStoryboard?.Resume(); // Resume the adversaire storyboard
+                }
             }
-            if (jeuEnPause)
-            {
-                labPauseJeu.Content = "Pause";
-            }
-            else { labPauseJeu.Content = ""; }
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
@@ -246,7 +244,6 @@ namespace TracteurXtreme
         private void DeplacerJoueur()
         {
             //met le tracteur au bon endroit au demarrage
-            
             if (uneSeulefois)
             {
                 double posInitX = (canvasPiste.ActualWidth - rectTracteur.Width) - (canvasPiste.ActualWidth / 1.17);
@@ -295,7 +292,7 @@ namespace TracteurXtreme
             } 
 
             // mettre à jour les positions X et Y
-            if (minuterie.IsEnabled)
+            if (!jeuEnPause)
             {
                 // vérifie si X n'est pas hors largeur du canvas
                 if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width)
@@ -420,10 +417,10 @@ namespace TracteurXtreme
             };
 
             // Creer la Storyboard et lui ajouter des animations 
-            Storyboard storyboard = new Storyboard();
+            adversaireStoryboard = new Storyboard();
             foreach (DoubleAnimation animation in animations)
             {
-                storyboard.Children.Add(animation);
+                adversaireStoryboard.Children.Add(animation);
             }
 
             // mise en place des targets d'animation
@@ -446,8 +443,8 @@ namespace TracteurXtreme
             {
                 animations[i].BeginTime = TimeSpan.FromSeconds((i+1) * vitesseTracteurAdversaire);
             }
-            
-            storyboard.Begin();
+
+            adversaireStoryboard.Begin();
             //if (jeuEnPause) { storyboard.Pause(); }
         }
         private void ChangeTracteurImage()
@@ -557,7 +554,8 @@ namespace TracteurXtreme
             ligneArriveHitbox = new Rect(Canvas.GetLeft(rectLigneArrive), Canvas.GetTop(rectLigneArrive), rectLigneArrive.Width, rectLigneArrive.Height);
             if (tracteurHitbox.IntersectsWith(ligneArriveHitbox))
             {
-                Console.WriteLine("touche ligne arrivee");
+                nbToucheLigneArrive++;
+                Console.WriteLine("touche ligne arrivee"+nbToucheLigneArrive);
             }
         }
         // Charger le fihcier en tableau 2D

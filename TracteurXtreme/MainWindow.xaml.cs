@@ -39,7 +39,7 @@ namespace TracteurXtreme
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
-        public long lastImageChangeTime = 0;
+        public long tempsDerniereImageChangee = 0;
         public int changerImageTracteurRouge = 0, nbToucheLigneArrive = 0;
         Rectangle bonusDiesel, bonusUneRoue, bonusDesRoues, bonusCollecteChamps;
         ImageBrush bonusRoueImg, bonusDesRouesImg, bonusDieselImg, bonusChampsImg;
@@ -58,7 +58,6 @@ namespace TracteurXtreme
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
             InitTimer();
-            //InitTopDepart();
 
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
             double tailleHauteurCanvas = canvasPiste.ActualWidth; // Largeur du Canvas
@@ -75,32 +74,17 @@ namespace TracteurXtreme
             minuterie.Tick += Jeu;
             minuterie.Start();
         }
-        //private void InitTopDepart()
-        //{
-        //    minuterie = new DispatcherTimer();
-        //    minuterie.Interval = TimeSpan.FromSeconds(1);
-        //    minuterie.Tick += Minuterie_Tick;
-        //    minuterie.Start();
-        //}
-        //private void Minuterie_Tick(object sender, EventArgs e)
-        //{
-        //    secondes++;
-        //    if (secondes == 1) { labDepart.Content = "3"; }
-        //    if (secondes == 2) { labDepart.Content = "2"; }
-        //    if (secondes == 3) { labDepart.Content = "1"; }
-        //    if (secondes == 4) { labDepart.Content = "Go"; }
-        //    if (secondes > 4) 
-        //    {
-        //        labDepart.Content = "";
-        //        minuterie.Stop();
-        //        InitTimer();               
-        //    }           
-        //}
         private void AfficherChrono()
         {
             double emplacementChrono = (canvasPiste.ActualWidth / 2);
             Canvas.SetLeft(labChrono, emplacementChrono);
             Canvas.SetTop(labChrono, 0);
+
+            double abssice = (canvasPiste.ActualWidth / 2) - labDepart.Width/2;
+            double ordonne = (canvasPiste.ActualHeight / 2) - labDepart.Height/2;
+
+            Canvas.SetLeft(labDepart, abssice);
+            Canvas.SetTop(labDepart, ordonne );
 
             tempsEcoule = chronometre.Elapsed; // récupère temps écoulé
             labChrono.Content = tempsEcoule.ToString(@"mm\:ss\.fff"); // format chrono (minutes : secondes : millisecondes)
@@ -139,11 +123,23 @@ namespace TracteurXtreme
             {
                 // mesure temps écoulé depuis le changement de la derniere image
                 long elapsedTime = chronometre.ElapsedMilliseconds;
-                if (elapsedTime - lastImageChangeTime >= 2000) // 2000 ms = 2 seconds
+                if (elapsedTime - tempsDerniereImageChangee >= 2000) // 2000 ms = 2 seconds
                 {
                     ChangeTracteurImage();
-                    lastImageChangeTime = elapsedTime; // met à jour le temps du dernier changement d'image
+                    tempsDerniereImageChangee = elapsedTime; // met à jour le temps du dernier changement d'image
                 }
+
+                // label ready go
+                if (elapsedTime >= 1500 && elapsedTime < 2000)
+                {
+                    labDepart.Content = "  GO!";
+                }
+                else if (elapsedTime >= 2000)
+                {
+                    labDepart.Content = "";
+                    labDepart.Background = null;
+                }
+
 
                 AfficherChrono();
                 InitPositionAdversaire();
@@ -462,7 +458,7 @@ namespace TracteurXtreme
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
                     rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
                     rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
-                    if (chronometre.ElapsedMilliseconds - lastImageChangeTime >= 2000)
+                    if (chronometre.ElapsedMilliseconds - tempsDerniereImageChangee >= 2000)
                     {
                         imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
                         rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;

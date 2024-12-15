@@ -22,6 +22,10 @@
     <None Remove="img\decorNiveau\pisteAquatique.jpg" />
     <None Remove="img\decorNiveau\pisteBulleRose.jpg" />
     <None Remove="img\decorNiveau\pisteFeu.jpg" />
+    <None Remove="img\drapeauxCourse\racingFlag1.png" />
+    <None Remove="img\drapeauxCourse\racingFlag2.png" />
+    <None Remove="img\drapeauxCourse\racingFlag3.png" />
+    <None Remove="img\drapeauxCourse\racingFlag4.png" />
     <None Remove="img\imgTracteurs\bas\tracteurBleu_bas.png" />
     <None Remove="img\imgTracteurs\bas\tracteurJaune_bas.png" />
     <None Remove="img\imgTracteurs\bas\tracteurNoirJoueur_bas.png" />
@@ -54,6 +58,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="img\drapeauxCourse\racingFlag1.png" />
+    <Resource Include="img\drapeauxCourse\racingFlag2.png" />
+    <Resource Include="img\drapeauxCourse\racingFlag3.png" />
+    <Resource Include="img\drapeauxCourse\racingFlag4.png" />
     <Resource Include="img\tabPistes\piste1.txt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

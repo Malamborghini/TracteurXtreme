@@ -27,14 +27,13 @@ namespace TracteurXtreme
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
             selectionChoix = (ComboBoxItem)cbChoixNiveau.SelectedItem;
 
             if (selectionChoix == null)
             {
                 //string content = selectionChoix.Content.ToString();
                 //MessageBox.Show("Selected Item: " + content);
-                MessageBox.Show("Il faut sélectionner un niveau pour jouer");
+                MessageBox.Show("Il faut sélectionner un niveau pour jouer.", "Séléction de niveau obligatoire", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {

@@ -69,9 +69,6 @@ namespace TracteurXtreme
         }
         private void InitTimer()
         {
-            //imgFillTracteurRouge.ImageSource = tracteurRougeBas; // Start with case 1 image
-            //changerImageTracteurRouge = 0;
-
             chronometre = Stopwatch.StartNew(); // mesurer le temps écoulé
             minuterie = new DispatcherTimer();
             minuterie.Interval = TimeSpan.FromMilliseconds(16);
@@ -138,26 +135,27 @@ namespace TracteurXtreme
         }
         private void Jeu(object? sender, EventArgs e)
         {
-            if (jeuEnPause) return; // Skip game logic when paused
-
-            // Measure elapsed time since last image change
-            long elapsedTime = chronometre.ElapsedMilliseconds;
-            if (elapsedTime - lastImageChangeTime >= 2000) // 2000 ms = 2 seconds
+            if (!jeuEnPause)
             {
-                ChangeTracteurImage();
-                lastImageChangeTime = elapsedTime; // Update the last image change time
-            }
+                // mesure temps écoulé depuis le changement de la derniere image
+                long elapsedTime = chronometre.ElapsedMilliseconds;
+                if (elapsedTime - lastImageChangeTime >= 2000) // 2000 ms = 2 seconds
+                {
+                    ChangeTracteurImage();
+                    lastImageChangeTime = elapsedTime; // met à jour le temps du dernier changement d'image
+                }
 
-            AfficherChrono();
-            InitPositionAdversaire();
-            DeplacerJoueur();
-            ChangerNiveau();
-            double posInitX = (canvasPiste.ActualWidth - rectLigneArrive.Width) - (canvasPiste.ActualWidth / 1.18);
-            double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.5);
-            Canvas.SetLeft(rectLigneArrive, posInitX);
-            Canvas.SetTop(rectLigneArrive, posInitY);
-            rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
-            rectLigneArrive.Width = canvasPiste.ActualWidth / 9.5;
+                AfficherChrono();
+                InitPositionAdversaire();
+                DeplacerJoueur();
+                ChangerNiveau();
+                double posInitX = (canvasPiste.ActualWidth - rectLigneArrive.Width) - (canvasPiste.ActualWidth / 1.18);
+                double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.5);
+                Canvas.SetLeft(rectLigneArrive, posInitX);
+                Canvas.SetTop(rectLigneArrive, posInitY);
+                rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
+                rectLigneArrive.Width = canvasPiste.ActualWidth / 9.5;
+            }
         }
         private void ChangerNiveau()
         {
@@ -218,48 +216,29 @@ namespace TracteurXtreme
             else { minuterie.Start(); }
 
             // mettre en pause
-            //if (e.Key == Key.Space || e.Key == Key.P)
-            //{
-            //    jeuEnPause = !jeuEnPause;
-
-            //    if (jeuEnPause)
-            //    {
-            //        labPauseJeu.Content = "Pause";
-            //        minuterie.Stop();
-            //        adversaireStoryboard?.Pause(); // Pause the adversaire storyboard
-            //    }
-            //    else
-            //    {
-            //        labPauseJeu.Content = "";
-            //        minuterie.Start();
-            //        adversaireStoryboard?.Resume(); // Resume the adversaire storyboard
-            //    }
-            //}
-
             if (e.Key == Key.Space || e.Key == Key.P)
             {
                 if (!jeuEnPause)
                 {
-                    jeuEnPause = true;
                     minuterie.Stop();
-                    adversaireStoryboard?.Pause(); // Pause the adversaire storyboard
+                    adversaireStoryboard?.Pause(); // Pause adversaire storyboard
                     if (chronometre.IsRunning)
                     {
-                        chronometre.Stop(); // Stop the timer for image changes
+                        chronometre.Stop(); // Stop timer images
                     }
                     labPauseJeu.Content = "Pause";
                 }
                 else
                 {
-                    jeuEnPause = false;
                     minuterie.Start();
-                    adversaireStoryboard?.Resume(); // Resume the adversaire storyboard
+                    adversaireStoryboard?.Resume(); // Resume adversaire storyboard
                     if (!chronometre.IsRunning)
                     {
-                        chronometre.Start(); // Resume the timer for image changes
+                        chronometre.Start(); // Resume timer images
                     }
                     labPauseJeu.Content = "";
                 }
+                jeuEnPause = !jeuEnPause;
             }
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)

@@ -69,12 +69,12 @@ namespace TracteurXtreme
             //Canvas.SetTop(bonusDiesel, 0);
             //Canvas.SetLeft(bonusDiesel, 0);
 
-            string cheminTab = "D:\\C#\\IUT\\sae_tracteur\\TracteurXtreme\\TracteurXtreme\\img\\tabPistes\\piste1.txt"; // Chemin du fichier binaire du tracé du circuit
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
             double tailleHauteurCanvas = canvasPiste.ActualWidth; // Largeur du Canvas
-            ChargementTableau(cheminTab); // Appel de la méthode pour chargé le talbeau en 2D
+            ChargementTableau(); // Appel de la méthode pour chargé le talbeau en 2D
             EstSurLeCircuit(tabCircuit, tailleHauteurCanvas, taileLargeurCanvas, tracteurXPixel, tracteurYPixel); // Appel méthode parce que j'ai eu un message qui m'a fait peur quand je l'ai enlevé 
-            this.Loaded += (s, e) => InitialiserCanvas(); //quand le main aura fini de charger execute la méthode InitialiserCanvas (s = sender, e = args)
+            this.Loaded += (s, e) => InitialiserCanvas(taileLargeurCanvas, tailleHauteurCanvas); //quand le main aura fini de charger execute la méthode InitialiserCanvas (s = sender, e = args)
+
         }
         private void InitTimer()
         {
@@ -561,31 +561,40 @@ namespace TracteurXtreme
             }
         }
         // Charger le fihcier en tableau 2D
-        public static void ChargementTableau(string chemin)
+        public static void ChargementTableau()
         {
-            string[] ligne = File.ReadAllLines(chemin); // Lis chaque ligne du fichier
-            int colone = ligne.Length;  // Détermine le nombre de colonnes
-            int lignes = ligne[0].Length; // Détermine le nombre de lignes
+            Uri cheminTabUri = new Uri("pack://application:,,,/img/tabPistes/piste1.txt");
+            StreamResourceInfo resourceInfo = Application.GetResourceStream(cheminTabUri); // Accede au contenu du fichier
 
-            tabCircuit = new int[colone, lignes]; // Initialise un tableau 2D avec le bon nb de lignes et de colonnes
-
-            for (int i = 0; i < colone; i++)
+            using (StreamReader reader = new StreamReader(resourceInfo.Stream)) // Lire le contenue du fichier
             {
-                for (int j = 0; j < lignes; j++)
+                string[] lignes = reader.ReadToEnd().Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries); // Lire tout le fichier et divise ligne par ligne 
+
+                // Déterminer le nombre de colonnes (longueur de la plus longue ligne)
+                int nbLignes = lignes.Length;
+                int nbColonnes = lignes[0].Trim().Length;
+
+                // Initialiser le tableau avec les dimensions appropriées
+                tabCircuit = new int[nbLignes, nbColonnes];
+
+                for (int i = 0; i < nbLignes; i++)
                 {
-                    tabCircuit[i, j] = ligne[i][j] - '0';
+                    string ligneActuelle = lignes[i].Trim(); // Supprimer les espaces inutiles
+                    for (int j = 0; j < ligneActuelle.Length; j++)
+                    {
+                        tabCircuit[i, j] = ligneActuelle[j] - '0'; // Conversion directe de char à int
+                    }
+                    for (int j = ligneActuelle.Length; j < nbColonnes; j++) // Remplir les colonnes restantes avec une valeur par défaut
+                    {
+                        tabCircuit[i, j] = 0;
+                    }
                 }
             }
+
         }
         // Verifie si le tracteur se trouve sur le circuit
-        private static bool EstSurLeCircuit(int[,] circuit, double taileLargeurCanvas, double tailleHauteurCanvas, double tracteurXPixel, double tracteurYPixel)
+        private bool EstSurLeCircuit(int[,] circuit, double taileLargeurCanvas, double tailleHauteurCanvas, double tracteurXPixel, double tracteurYPixel)
         {
-            if (taileLargeurCanvas == 0 || tailleHauteurCanvas == 0) // Vérifie si le canvas n'est pas initialisé
-            {
-                Console.WriteLine("Erreur : Le canvas n'a pas encore été initialisé correctement.");
-                return false;
-            }
-
             int nbColonne = circuit.GetLength(1); // Détermine le nb de colonnes dans le tableau 
             int nbLignes = circuit.GetLength(0);  // Détermine le nb de lignes dans le tableau
 
@@ -601,7 +610,6 @@ namespace TracteurXtreme
                 return false;
             }
 
-
             if (circuit[indiceLigne, indiceColonne] == 1) // Vérifie si la case du talbeau de la position du tracteur est un 1
             {
                 Console.WriteLine("Vous êtes sur le circuit");
@@ -614,16 +622,15 @@ namespace TracteurXtreme
                 return false;
             }
         }
-        private void InitialiserCanvas()
-        {
-            double taileLargeurCanvas = canvasPiste.ActualHeight; // Récupère la hauteur du Canvas
-            double tailleHauteurCanvas = canvasPiste.ActualWidth; // Idem pour la largeur 
 
+        private void InitialiserCanvas(double taileLargeurCanvas, double tailleHauteurCanvas)
+        {
             if (taileLargeurCanvas == 0 || tailleHauteurCanvas == 0) // Vérifie si le canvas est initialisé
             {
                 Console.WriteLine("Erreur : Le canvas n'a pas encore été initialisé correctement.");
                 return;
             }
         }
+
     }
 }

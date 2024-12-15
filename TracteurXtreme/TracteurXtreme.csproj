@@ -49,7 +49,14 @@
     <None Remove="img\piste.png" />
     <None Remove="img\piste_fondVert.png" />
     <None Remove="img\race_tracteur.png" />
+    <None Remove="img\tabPistes\piste1.txt" />
     <None Remove="img\tracteur_vert.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="img\tabPistes\piste1.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

@@ -246,6 +246,12 @@ namespace TracteurXtreme
         }
         private void DeplacerJoueur()
         {
+            bool estSurLeCircuit = EstSurLeCircuit(tabCircuit, canvasPiste.ActualWidth, canvasPiste.ActualHeight, tracteurXPixel, tracteurYPixel);
+            if (estSurLeCircuit == false)
+            {
+                vitesseTracteurJoueur = 1;
+                Console.WriteLine("vitesse réduit");
+            }
             //met le tracteur au bon endroit au demarrage
             if (uneSeulefois)
             {
@@ -256,7 +262,6 @@ namespace TracteurXtreme
                 rectTracteur.Height = canvasPiste.ActualHeight / 15;
                 rectTracteur.Width = canvasPiste.ActualWidth / 35;
             }
-
             double posX = Canvas.GetLeft(rectTracteur);
             double posY = Canvas.GetTop(rectTracteur);
 
@@ -313,7 +318,6 @@ namespace TracteurXtreme
             Collision();
             tracteurXPixel = Canvas.GetLeft(rectTracteur);
             tracteurYPixel = Canvas.GetTop(rectTracteur);
-            EstSurLeCircuit(tabCircuit, canvasPiste.ActualWidth, canvasPiste.ActualHeight, tracteurXPixel, tracteurYPixel);
         }
         private void InitPositionAdversaire()
         {
@@ -567,9 +571,9 @@ namespace TracteurXtreme
             Uri cheminTabUri = new Uri("pack://application:,,,/img/tabPistes/piste1.txt");
             StreamResourceInfo resourceInfo = Application.GetResourceStream(cheminTabUri); // Accede au contenu du fichier
 
-            using (StreamReader reader = new StreamReader(resourceInfo.Stream)) // Lire le contenue du fichier
+            using (StreamReader lecture = new StreamReader(resourceInfo.Stream)) // Lire le contenue du fichier
             {
-                string[] lignes = reader.ReadToEnd().Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries); // Lire tout le fichier et divise ligne par ligne 
+                string[] lignes = lecture.ReadToEnd().Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries); // Lire tout le fichier et divise ligne par ligne 
 
                 // Déterminer le nombre de colonnes (longueur de la plus longue ligne)
                 int nbLignes = lignes.Length;

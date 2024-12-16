@@ -51,6 +51,12 @@ namespace TracteurXtreme
         public BitmapImage Aquatique { get; set; }
         public static string ChoixDecor {  get; set; }
 
+        // Variables for lap counting and cooldown
+        int nbToursEffectues = 0; // Counts how many times the finish line is crossed
+        bool ligneArriveCooldown = false; // Cooldown flag
+        DateTime dernierTempsTraverse = DateTime.MinValue; // Last time car crossed the finish line
+        const int seuilRechargement = 1000; // Cooldown in milliseconds (1 second)
+
         public MainWindow()
         {
             InitializeComponent();
@@ -75,6 +81,12 @@ namespace TracteurXtreme
             minuterie.Tick += Jeu;
             minuterie.Start();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            CommencerJeu();
+        }
+
         private void AfficherChrono()
         {
             double emplacementChrono = (canvasPiste.ActualWidth / 2);
@@ -152,7 +164,7 @@ namespace TracteurXtreme
                 //rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
                 rectLigneArrive.Width = canvasPiste.ActualWidth / 9;
 
-                GagnerCourse();
+                FinirCourse();
             }
         }
         private void ChangerNiveau()
@@ -573,10 +585,30 @@ namespace TracteurXtreme
                 }
             }
             ligneArriveHitbox = new Rect(Canvas.GetLeft(rectLigneArrive), Canvas.GetTop(rectLigneArrive), rectLigneArrive.Width, rectLigneArrive.Height);
-            if (tracteurHitbox.IntersectsWith(ligneArriveHitbox))
+            // Check for collision and cooldown
+            if (tracteurHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown)
             {
-                nbToucheLigneArrive++;
-                Console.WriteLine("touche ligne arrivee"+nbToucheLigneArrive);
+                // Activer cooldown
+                ligneArriveCooldown = true;
+                dernierTempsTraverse = DateTime.Now;
+
+                // Incrementer le compteur de tours
+                nbToursEffectues++;
+
+                // Check tour final
+                if (nbToursEffectues == 3)
+                {
+                    gagne = true;
+                    jeuTermine = true;
+                    MessageBox.Show("Woohoo tu as gagné !");
+                    nbToursEffectues = 0; // reinitisaliser pour rejouer
+                }
+
+                // Cooldown reset (asynchronous delay to avoid blocking UI thread)
+                Task.Delay(seuilRechargement).ContinueWith(_ =>
+                {
+                    ligneArriveCooldown = false;
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
         // Charger le fihcier en tableau 2D
@@ -650,31 +682,42 @@ namespace TracteurXtreme
                 return;
             }
         }
-        private void GagnerCourse()
+        private void FinirCourse()
         {
-            bool uneFois = true;
-            if (tempsEcouleTotal >= 25000 && tracteurHitbox.IntersectsWith(ligneArriveHitbox) && uneFois)
-            {
-                gagne = true;
-                jeuTermine = true;
-                minuterie.Stop();
-                chronometre.Stop();
-                MessageBox.Show("Vous avez gagne");
-                uneFois = false;
-                adversaireStoryboard.Stop();
-            }
+            //bool uneFois = true;
+            //if (tempsEcouleTotal >= 25000 && tracteurHitbox.IntersectsWith(ligneArriveHitbox) && uneFois)
+            //{
+            //    gagne = true;
+            //    jeuTermine = true;
+            //    minuterie.Stop();
+            //    chronometre.Stop();
+            //    MessageBox.Show("Vous avez gagne");
+            //    uneFois = false;
+            //    adversaireStoryboard.Stop();
+            //}
             if (tempsEcouleTotal >= 48000 && tempsEcouleTotal <= 48100 && !gagne)
             {
                 MessageBox.Show("Vous avez perdu");
                 jeuTermine = true;
             }
+            if (jeuTermine)
+            {
+                minuterie.Stop();
+                chronometre.Stop();
+                adversaireStoryboard.Stop();
+            }
         }
         private void CommencerJeu()
         {
-            jeuEnPause = false;
-            jeuTermine = false;
-            adversaireStoryboard.Begin();
+            if (jeuTermine)
+            {
+                gagne = false;
+                jeuEnPause = false;
+                jeuTermine = false;
+                InitTimer();
+                uneSeulefois = true;
+                DeplacerTracteurAdversaire();
+            }
         }
-
     }
 }

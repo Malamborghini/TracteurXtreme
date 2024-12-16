@@ -35,10 +35,11 @@ namespace TracteurXtreme
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
         int secondes = 0;
-        public bool uneSeulefois = true, jeuEnPause = false, jeuTermine;
+        public bool uneSeulefois = true, jeuEnPause = false, jeuTermine = false, gagne = false;
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
+        long tempsEcouleTotal;
         public long tempsDerniereImageChangee = 0;
         public int changerImageTracteurRouge = 0, nbToucheLigneArrive = 0;
         Rectangle bonusDiesel, bonusUneRoue, bonusDesRoues, bonusCollecteChamps;
@@ -122,35 +123,36 @@ namespace TracteurXtreme
             if (!jeuEnPause)
             {
                 // mesure temps écoulé depuis le changement de la derniere image
-                long elapsedTime = chronometre.ElapsedMilliseconds;
-                if (elapsedTime - tempsDerniereImageChangee >= 2000) // 2000 ms = 2 seconds
+                tempsEcouleTotal = chronometre.ElapsedMilliseconds;
+                if (tempsEcouleTotal - tempsDerniereImageChangee >= 2000) // 2000 ms = 2 seconds
                 {
                     ChangeTracteurImage();
-                    tempsDerniereImageChangee = elapsedTime; // met à jour le temps du dernier changement d'image
+                    tempsDerniereImageChangee = tempsEcouleTotal; // met à jour le temps du dernier changement d'image
                 }
 
                 // label ready go
-                if (elapsedTime >= 1500 && elapsedTime < 2000)
+                if (tempsEcouleTotal >= 1500 && tempsEcouleTotal < 2000)
                 {
                     labDepart.Content = "  GO!";
                 }
-                else if (elapsedTime >= 2000)
+                else if (tempsEcouleTotal >= 2000)
                 {
                     labDepart.Content = "";
                     labDepart.Background = null;
                 }
-
 
                 AfficherChrono();
                 InitPositionAdversaire();
                 DeplacerJoueur();
                 ChangerNiveau();
                 double posInitX = (canvasPiste.ActualWidth - rectLigneArrive.Width) - (canvasPiste.ActualWidth / 1.18);
-                double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.5);
+                double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.1);
                 Canvas.SetLeft(rectLigneArrive, posInitX);
                 Canvas.SetTop(rectLigneArrive, posInitY);
-                rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
-                rectLigneArrive.Width = canvasPiste.ActualWidth / 9.5;
+                //rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
+                rectLigneArrive.Width = canvasPiste.ActualWidth / 9;
+
+                GagnerCourse();
             }
         }
         private void ChangerNiveau()
@@ -235,6 +237,11 @@ namespace TracteurXtreme
                     labPauseJeu.Content = "";
                 }
                 jeuEnPause = !jeuEnPause;
+            }
+
+            if (jeuTermine && e.Key==Key.R)
+            {
+                CommencerJeu();
             }
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)
@@ -341,7 +348,7 @@ namespace TracteurXtreme
             double pointDePiste_8 = (canvasPiste.ActualWidth / 1.06) - (rectTracteurRouge.Width / 1.06);
             double pointDePiste_9 = (canvasPiste.ActualHeight / 16) - (rectTracteurRouge.Height / 16);
             double pointDePiste_10 = (canvasPiste.ActualWidth / 18) - (rectTracteurRouge.Width / 18);
-            double pointDePiste_11 = (canvasPiste.ActualHeight / 1.9) - (rectTracteurRouge.Height / 1.9);
+            double pointDePiste_11 = (canvasPiste.ActualHeight / 2) - (rectTracteurRouge.Height / 2);
 
             DoubleAnimation[] animations = new DoubleAnimation[]
             {
@@ -451,8 +458,10 @@ namespace TracteurXtreme
                 animations[i].BeginTime = TimeSpan.FromSeconds((i+1) * vitesseTracteurAdversaire);
             }
 
+            // repeter les animations 2 fois
+            adversaireStoryboard.RepeatBehavior = new RepeatBehavior(2);  // repeter 2 fois
+
             adversaireStoryboard.Begin();
-            //if (jeuEnPause) { storyboard.Pause(); }
         }
         private void ChangeTracteurImage()
         {
@@ -514,9 +523,14 @@ namespace TracteurXtreme
                     rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
                     rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
+                case 11:
+                    imgFillTracteurRouge.ImageSource = tracteurRougeBas;
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    break;
             }
             changerImageTracteurRouge++;
-            if (changerImageTracteurRouge > 10)
+            if (changerImageTracteurRouge > 11)
             {
                 changerImageTracteurRouge = 0;
             }
@@ -617,7 +631,7 @@ namespace TracteurXtreme
 
             if (circuit[indiceLigne, indiceColonne] == 1) // Vérifie si la case du talbeau de la position du tracteur est un 1
             {
-                Console.WriteLine("Vous êtes sur le circuit");
+                //Console.WriteLine("Vous êtes sur le circuit");
                 return true;
 
             }
@@ -635,6 +649,31 @@ namespace TracteurXtreme
                 Console.WriteLine("Erreur : Le canvas n'a pas encore été initialisé correctement.");
                 return;
             }
+        }
+        private void GagnerCourse()
+        {
+            bool uneFois = true;
+            if (tempsEcouleTotal >= 25000 && tracteurHitbox.IntersectsWith(ligneArriveHitbox) && uneFois)
+            {
+                gagne = true;
+                jeuTermine = true;
+                minuterie.Stop();
+                chronometre.Stop();
+                MessageBox.Show("Vous avez gagne");
+                uneFois = false;
+                adversaireStoryboard.Stop();
+            }
+            if (tempsEcouleTotal >= 48000 && tempsEcouleTotal <= 48100 && !gagne)
+            {
+                MessageBox.Show("Vous avez perdu");
+                jeuTermine = true;
+            }
+        }
+        private void CommencerJeu()
+        {
+            jeuEnPause = false;
+            jeuTermine = false;
+            adversaireStoryboard.Begin();
         }
 
     }

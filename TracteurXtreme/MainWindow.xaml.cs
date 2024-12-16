@@ -43,7 +43,7 @@ namespace TracteurXtreme
         public long tempsDerniereImageChangee = 0;
         public int changerImageTracteurRouge = 0, nbToucheLigneArrive = 0;
         Rectangle bonusDiesel, bonusUneRoue, bonusDesRoues, bonusCollecteChamps;
-        ImageBrush bonusRoueImg, bonusDesRouesImg, bonusDieselImg, bonusChampsImg;
+        ImageBrush bonusRoueImg, bonusDesRouesImg, bonusDieselImg, bonusChampsImg, backgroundLabelGo;
         private Storyboard? adversaireStoryboard;
         public BitmapImage Rose { get; set; }
         public BitmapImage Feu { get; set; }
@@ -142,10 +142,20 @@ namespace TracteurXtreme
                     tempsDerniereImageChangee = tempsEcouleTotal; // met à jour le temps du dernier changement d'image
                 }
 
+                backgroundLabelGo = new ImageBrush();
+                backgroundLabelGo.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/drapeauxCourse/racingFlag4.png"));
+                backgroundLabelGo.Stretch = Stretch.Fill;
+
                 // label ready go
+                if (tempsEcouleTotal < 1500)
+                {
+                    labDepart.Content = "Ready";
+                    labDepart.Background = backgroundLabelGo;
+                }
                 if (tempsEcouleTotal >= 1500 && tempsEcouleTotal < 2000)
                 {
                     labDepart.Content = "  GO!";
+                    labDepart.Background = backgroundLabelGo;
                 }
                 else if (tempsEcouleTotal >= 2000)
                 {
@@ -158,7 +168,7 @@ namespace TracteurXtreme
                 DeplacerJoueur();
                 ChangerNiveau();
                 double posInitX = (canvasPiste.ActualWidth - rectLigneArrive.Width) - (canvasPiste.ActualWidth / 1.18);
-                double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.1);
+                double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.2);
                 Canvas.SetLeft(rectLigneArrive, posInitX);
                 Canvas.SetTop(rectLigneArrive, posInitY);
                 //rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
@@ -213,6 +223,7 @@ namespace TracteurXtreme
         {
             menuPrincipal.ShowDialog();
             jeuEnPause = true;
+            adversaireStoryboard.Pause();
             //menuPrincipal.DialogResult = false;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -321,17 +332,20 @@ namespace TracteurXtreme
             // mettre à jour les positions X et Y
             if (!jeuEnPause)
             {
-                // vérifie si X n'est pas hors largeur du canvas
-                if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width)
+                if (tempsEcouleTotal >= 2000)
                 {
-                    Canvas.SetLeft(rectTracteur, posX);
-                    uneSeulefois = false;
-                }
-                // vérifie si Y n'est pas hors hauteur du canvas
-                if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width)
-                {
-                    Canvas.SetTop(rectTracteur, posY);
-                    uneSeulefois = false;
+                    // vérifie si X n'est pas hors largeur du canvas
+                    if (posX >= 0 && posX <= canvasPiste.ActualWidth - rectTracteur.Width)
+                    {
+                        Canvas.SetLeft(rectTracteur, posX);
+                        uneSeulefois = false;
+                    }
+                    // vérifie si Y n'est pas hors hauteur du canvas
+                    if (posY >= 0 && posY <= canvasPiste.ActualHeight - rectTracteur.Width)
+                    {
+                        Canvas.SetTop(rectTracteur, posY);
+                        uneSeulefois = false;
+                    }
                 }
             }
             Collision();

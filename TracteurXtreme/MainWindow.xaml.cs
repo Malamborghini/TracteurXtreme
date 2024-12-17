@@ -236,6 +236,7 @@ namespace TracteurXtreme
             menuPrincipal.ShowDialog();
             jeuEnPause = true;
             adversaireStoryboard.Pause();
+            labPauseJeu.Content = "Pause";
             //menuPrincipal.DialogResult = false;
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)

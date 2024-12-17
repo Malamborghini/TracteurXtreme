@@ -202,17 +202,16 @@ namespace TracteurXtreme
                     bonusDiesel.Height = 50;
                     //bonusDiesel.Fill = Brushes.Green;
                     //bonusDiesel.Stroke = Brushes.Red;
-                    ImageBrush imageBrush = new ImageBrush();
-                    imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_diesel.png"));
-                    bonusDiesel.Fill = imageBrush;
+                    bonusDiesel.Fill = bonusDieselImg;
                     bonusDiesel.StrokeThickness = 2;
                     bonusDiesel.Name = "rectBonusDiesel";
-                    Thickness margin = bonusDiesel.Margin;
-                    margin.Left = 50;
-                    bonusDiesel.Margin = margin;
+                    //Thickness margin = bonusDiesel.Margin;
+                    //margin.Left = 50;
+                    //bonusDiesel.Margin = margin;
                     canvasPiste.Children.Add(bonusDiesel);
-                    Canvas.SetTop(bonusDiesel, canvasPiste.ActualHeight/17);
-                    Canvas.SetLeft(bonusDiesel, canvasPiste.ActualWidth/2);
+                    Canvas.SetTop(bonusDiesel, canvasPiste.ActualHeight / 17);
+                    Canvas.SetLeft(bonusDiesel, canvasPiste.ActualWidth / 2);
+                    //bonusDiesel.Visibility = Visibility.Hidden;
 
 
                     break;

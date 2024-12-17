@@ -612,58 +612,58 @@ namespace TracteurXtreme
                     bas = false;
                 }
             }
-            
-            // le joueur gagne
-            //if (tracteurHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown) // verifier collision et cooldown
-            //{
-            //    // Activer cooldown
-            //    ligneArriveCooldown = true;
-            //    dernierTempsTraverse = DateTime.Now;
-
-            //    // Incrementer le compteur de tours
-            //    nbToursEffectues++;
-
-            //    // Check tour final
-            //    if (nbToursEffectues == 3)
-            //    {
-            //        gagne = true;
-            //        jeuTermine = true;
-            //        MessageBox.Show("Woohoo tu as gagné !");
-            //        nbToursEffectues = 0; // reinitisaliser pour rejouer
-            //    }
-
-            //    // Cooldown reset (asynchronous delay to avoid blocking UI thread)
-            //    Task.Delay(seuilRechargement).ContinueWith(_ =>
-            //    {
-            //        ligneArriveCooldown = false;
-            //    }, TaskScheduler.FromCurrentSynchronizationContext());
-            //}
 
             // le joueur gagne
-            if (adversaireHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown && !gagne) // verifier collision et cooldown
+            if (tracteurHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown) // verifier collision et cooldown
             {
                 // Activer cooldown
-                adversaireArriveCooldown = true;
-                dernierTempsAdversaire = DateTime.Now;
+                ligneArriveCooldown = true;
+                dernierTempsTraverse = DateTime.Now;
 
                 // Incrementer le compteur de tours
-                nbToursAdversaire++;
+                nbToursEffectues++;
 
                 // Check tour final
-                if (nbToursAdversaire == 3)
+                if (nbToursEffectues == 3)
                 {
-                    gagne = false;
+                    gagne = true;
                     jeuTermine = true;
-                    MessageBox.Show("Boohoo tu as perdu !");
-                    nbToursAdversaire = 0; // reinitisaliser pour rejouer
+                    MessageBox.Show("Woohoo tu as gagné !");
+                    nbToursEffectues = 0; // reinitisaliser pour rejouer
                 }
 
                 // Cooldown reset (asynchronous delay to avoid blocking UI thread)
-                Task.Delay(rechargementAdversaire).ContinueWith(_ =>
+                Task.Delay(seuilRechargement).ContinueWith(_ =>
                 {
-                    adversaireArriveCooldown = false;
+                    ligneArriveCooldown = false;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+
+            // le joueur perd
+            //if (adversaireHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown && !gagne) // verifier collision et cooldown
+            //{
+            //    // Activer cooldown
+            //    adversaireArriveCooldown = true;
+            //    dernierTempsAdversaire = DateTime.Now;
+
+            //    // Incrementer le compteur de tours
+            //    nbToursAdversaire++;
+
+            //    // Check tour final
+            //    if (nbToursAdversaire == 3)
+            //    {
+            //        gagne = false;
+            //        jeuTermine = true;
+            //        MessageBox.Show("Boohoo tu as perdu !");
+            //        nbToursAdversaire = 0; // reinitisaliser pour rejouer
+            //    }
+
+            //    // Cooldown reset (asynchronous delay to avoid blocking UI thread)
+            //    Task.Delay(rechargementAdversaire).ContinueWith(_ =>
+            //    {
+            //        adversaireArriveCooldown = false;
+            //    }, TaskScheduler.FromCurrentSynchronizationContext());
+            //}
         }
         // Charger le fihcier en tableau 2D
         public static void ChargementTableau()

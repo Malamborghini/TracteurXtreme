@@ -35,15 +35,20 @@ namespace TracteurXtreme
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
         int secondes = 0;
-        public bool uneSeulefois = true, jeuEnPause = false, jeuTermine = false, gagne = false;
+        public bool uneSeulefois = true, 
+                    jeuEnPause = false, 
+                    jeuTermine = false, 
+                    gagne = false;
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
         long tempsEcouleTotal;
         public long tempsDerniereImageChangee = 0;
         public int changerImageTracteurRouge = 0, nbToucheLigneArrive = 0;
+
         Rectangle bonusDiesel, bonusUneRoue, bonusDesRoues, bonusCollecteChamps;
         ImageBrush bonusRoueImg, bonusDesRouesImg, bonusDieselImg, bonusChampsImg, backgroundLabelGo;
+
         private Storyboard? adversaireStoryboard;
         public BitmapImage Rose { get; set; }
         public BitmapImage Feu { get; set; }
@@ -51,11 +56,17 @@ namespace TracteurXtreme
         public BitmapImage Aquatique { get; set; }
         public static string ChoixDecor {  get; set; }
 
-        // Variables for lap counting and cooldown
-        int nbToursEffectues = 0; // Counts how many times the finish line is crossed
-        bool ligneArriveCooldown = false; // Cooldown flag
-        DateTime dernierTempsTraverse = DateTime.MinValue; // Last time car crossed the finish line
-        const int seuilRechargement = 1000; // Cooldown in milliseconds (1 second)
+        // Variables pour comter les tours effectues et cooldown
+        int nbToursEffectues = 0; // Compte combien de fois la ligne d'arrivée est franchie
+        bool ligneArriveCooldown = false; // Cooldown drapeau
+        DateTime dernierTempsTraverse = DateTime.MinValue; // La dernière fois que le trateur a franchi la ligne d'arrivée
+        const int seuilRechargement = 1000; // Cooldown en milliseconds (1 second)
+
+        // Variables pour comter les tours effectues et cooldown adversaire
+        int nbToursAdversaire = 0; // Compte combien de fois la ligne d'arrivée est franchie
+        bool adversaireArriveCooldown = false; // Cooldown drapeau
+        DateTime dernierTempsAdversaire = DateTime.MinValue; // La dernière fois que le trateur a franchi la ligne d'arrivée
+        const int rechargementAdversaire = 1000; // Cooldown en milliseconds (1 second)
 
         public MainWindow()
         {
@@ -166,6 +177,7 @@ namespace TracteurXtreme
                 AfficherChrono();
                 InitPositionAdversaire();
                 DeplacerJoueur();
+                Collision();
                 ChangerNiveau();
                 double posInitX = (canvasPiste.ActualWidth - rectLigneArrive.Width) - (canvasPiste.ActualWidth / 1.18);
                 double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.2);
@@ -348,7 +360,7 @@ namespace TracteurXtreme
                     }
                 }
             }
-            Collision();
+            
             tracteurXPixel = Canvas.GetLeft(rectTracteur);
             tracteurYPixel = Canvas.GetTop(rectTracteur);
         }
@@ -575,6 +587,8 @@ namespace TracteurXtreme
         {
             tracteurHitbox = new Rect(Canvas.GetLeft(rectTracteur), Canvas.GetTop(rectTracteur), rectTracteur.Width, rectTracteur.Height);
             adversaireHitbox = new Rect(Canvas.GetLeft(rectTracteurRouge), Canvas.GetTop(rectTracteurRouge), rectTracteurRouge.Width, rectTracteurRouge.Height);
+            ligneArriveHitbox = new Rect(Canvas.GetLeft(rectLigneArrive), Canvas.GetTop(rectLigneArrive), rectLigneArrive.Width, rectLigneArrive.Height);
+
             if (tracteurHitbox.IntersectsWith(adversaireHitbox))
             {
                 if (droite)
@@ -598,9 +612,9 @@ namespace TracteurXtreme
                     bas = false;
                 }
             }
-            ligneArriveHitbox = new Rect(Canvas.GetLeft(rectLigneArrive), Canvas.GetTop(rectLigneArrive), rectLigneArrive.Width, rectLigneArrive.Height);
-            // Check for collision and cooldown
-            if (tracteurHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown)
+            
+            // le joueur gagne
+            if (tracteurHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown) // verifier collision et cooldown
             {
                 // Activer cooldown
                 ligneArriveCooldown = true;

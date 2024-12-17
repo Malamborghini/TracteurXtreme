@@ -638,6 +638,32 @@ namespace TracteurXtreme
                     ligneArriveCooldown = false;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+
+            // le joueur gagne
+            //if (adversaireHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown && !gagne) // verifier collision et cooldown
+            //{
+            //    // Activer cooldown
+            //    adversaireArriveCooldown = true;
+            //    dernierTempsAdversaire = DateTime.Now;
+
+            //    // Incrementer le compteur de tours
+            //    nbToursAdversaire++;
+
+            //    // Check tour final
+            //    if (nbToursAdversaire == 3)
+            //    {
+            //        gagne = false;
+            //        jeuTermine = true;
+            //        MessageBox.Show("Boohoo tu as perdu !");
+            //        nbToursAdversaire = 0; // reinitisaliser pour rejouer
+            //    }
+
+            //    // Cooldown reset (asynchronous delay to avoid blocking UI thread)
+            //    Task.Delay(rechargementAdversaire).ContinueWith(_ =>
+            //    {
+            //        adversaireArriveCooldown = false;
+            //    }, TaskScheduler.FromCurrentSynchronizationContext());
+            //}
         }
         // Charger le fihcier en tableau 2D
         public static void ChargementTableau()
@@ -723,11 +749,13 @@ namespace TracteurXtreme
             //    uneFois = false;
             //    adversaireStoryboard.Stop();
             //}
+
             if (tempsEcouleTotal >= 48000 && tempsEcouleTotal <= 48100 && !gagne)
             {
                 MessageBox.Show("Vous avez perdu");
                 jeuTermine = true;
             }
+
             if (jeuTermine)
             {
                 minuterie.Stop();
@@ -739,7 +767,12 @@ namespace TracteurXtreme
         {
             if (jeuTermine)
             {
+                gauche = false;
+                droite = false;
+                haut = false;
+                bas = false;
                 gagne = false;
+                nbToursEffectues = 0;
                 jeuEnPause = false;
                 jeuTermine = false;
                 InitTimer();

@@ -43,5 +43,16 @@ namespace TracteurXtreme
                 this.Hide();
             }            
         }
+
+        private void butQuitter_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            App.Current.Shutdown();
+        }
+
+        private void butRegles_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

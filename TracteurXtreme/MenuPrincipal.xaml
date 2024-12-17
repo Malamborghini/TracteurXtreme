@@ -43,34 +43,58 @@
                 <DropShadowEffect />
             </Label.Effect>
         </Label>
-        <Button
-            x:Name="butJouerMulti"
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="100,0,50,0"
-            Content=" Jouer Multijoueur "
-            FontFamily="Broadway"
-            FontSize="24"
-            Foreground="White">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0.46" Color="#FFD61414" />
-                    <GradientStop Offset="1" Color="Black" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="15" />
-                </Style>
-            </Button.Resources>
-        </Button>
+        
+        <Grid x:Name="gridDansGrid" Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button
+                x:Name="butQuitter"
+                Content=" Quitter le Jeu "
+                FontFamily="Broadway"
+                FontSize="20"
+                Foreground="White" Click="butQuitter_Click" Margin="20,10,20,10">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0.46" Color="#FFD61414" />
+                        <GradientStop Offset="1" Color="Black" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button
+                x:Name="butRegles"
+                Content=" Regles du Jeu "
+                Grid.Column="1"
+                FontFamily="Broadway"
+                FontSize="20"
+                Foreground="White" Click="butRegles_Click" Margin="20,10,20,10">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0.46" Color="#FFD61414" />
+                        <GradientStop Offset="1" Color="Black" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+
         <Button
             x:Name="butJouerSolo"
             Grid.Row="1"
             Grid.Column="2"
-            Margin="50,0,100,0"
+            Margin="50,10,100,10"
             Click="Button_Click"
-            Content=" Jouer Solo "
+            Content="Jouer"
             FontFamily="Broadway"
             FontSize="24"
             Foreground="White">

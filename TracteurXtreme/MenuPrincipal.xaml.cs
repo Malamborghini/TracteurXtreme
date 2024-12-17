@@ -52,7 +52,14 @@ namespace TracteurXtreme
 
         private void butRegles_Click(object sender, RoutedEventArgs e)
         {
-
+            if (borderRegles.Visibility == Visibility.Collapsed)
+            {
+                borderRegles.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                borderRegles.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

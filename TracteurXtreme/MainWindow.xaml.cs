@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Resources;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using static System.Net.WebRequestMethods;
 
 namespace TracteurXtreme
 {
@@ -37,7 +38,8 @@ namespace TracteurXtreme
         int secondes = 0;
         public bool uneSeulefois = true, 
                     jeuEnPause = false, 
-                    jeuTermine = false, 
+                    jeuTermine = false,
+                    intersectionBonusRoue = true,
                     gagne = false;
         public double tracteurXPixel;
         public double tracteurYPixel;
@@ -196,24 +198,6 @@ namespace TracteurXtreme
                 case "cbNiveauRose":
                     canvasPiste.Background = new ImageBrush(Rose);
                     vitesseTracteurJoueur = 10;
-
-                    bonusDiesel = new Rectangle();
-                    bonusDiesel.Width = 50;
-                    bonusDiesel.Height = 50;
-                    //bonusDiesel.Fill = Brushes.Green;
-                    //bonusDiesel.Stroke = Brushes.Red;
-                    bonusDiesel.Fill = bonusDieselImg;
-                    bonusDiesel.StrokeThickness = 2;
-                    bonusDiesel.Name = "rectBonusDiesel";
-                    //Thickness margin = bonusDiesel.Margin;
-                    //margin.Left = 50;
-                    //bonusDiesel.Margin = margin;
-                    canvasPiste.Children.Add(bonusDiesel);
-                    Canvas.SetTop(bonusDiesel, canvasPiste.ActualHeight / 17);
-                    Canvas.SetLeft(bonusDiesel, canvasPiste.ActualWidth / 2);
-                    //bonusDiesel.Visibility = Visibility.Hidden;
-
-
                     break;
                 case "cbNiveauFeu":
                     canvasPiste.Background = new ImageBrush(Feu);
@@ -228,6 +212,52 @@ namespace TracteurXtreme
                     canvasPiste.Background = new ImageBrush(Aquatique);
                     vitesseTracteurJoueur = 3;
                     break;
+            }
+            gestionBonus();
+        }
+        private void gestionBonus()
+        {
+            //bonusUneRoue = new Rectangle();
+            //bonusUneRoue.Width = 50;
+            //bonusUneRoue.Height = 40;
+            //bonusUneRoue.Fill = bonusRoueImg;
+            //bonusUneRoue.Name = "rectBonusUneRoue";
+            //bonusUneRoue.Tag = "bonus";
+            //canvasPiste.Children.Add(bonusUneRoue);
+            //Canvas.SetTop(bonusUneRoue, canvasPiste.ActualHeight / 1.2);
+            //Canvas.SetLeft(bonusUneRoue, canvasPiste.ActualWidth / 5.5);
+
+            //bonusDiesel = new Rectangle();
+            //bonusDiesel.Width = 50;
+            //bonusDiesel.Height = 50;
+            //bonusDiesel.Fill = bonusDieselImg;
+            //bonusDiesel.Name = "rectBonusDiesel";
+            //bonusDiesel.Tag = "bonus";
+            //canvasPiste.Children.Add(bonusDiesel);
+            //Canvas.SetTop(bonusDiesel, canvasPiste.ActualHeight / 17);
+            //Canvas.SetLeft(bonusDiesel, canvasPiste.ActualWidth / 2);
+
+            Canvas.SetTop(rectBonusUneRoue, canvasPiste.ActualHeight / 1.2);
+            Canvas.SetLeft(rectBonusUneRoue, canvasPiste.ActualWidth / 5.5);
+            if (nbToursEffectues >= 1 && intersectionBonusRoue)
+            {
+                rectBonusUneRoue.Visibility = Visibility.Visible;
+                intersectionBonusRoue = false;
+            }
+            //if (nbToursEffectues >= 2)
+            //{
+            //    bonusDiesel.Visibility = Visibility.Hidden;
+            //}
+            foreach (var x in canvasPiste.Children.OfType<Rectangle>())
+            {
+                Rect bonusHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                if ((string)x.Tag == "bonus")
+                {
+                    if (tracteurHitbox.IntersectsWith(bonusHitBox) && x.Visibility == Visibility.Visible)
+                    {
+                        x.Visibility = Visibility.Hidden;
+                    }
+                }
             }
         }
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -88,6 +88,11 @@
                 </Style>
             </Button.Resources>
         </Button>
+        <Rectangle x:Name="rectBonusUneRoue" Height="35" Canvas.Left="192" Canvas.Top="421" Width="40" Visibility="Hidden" Tag="bonus">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/img/bonus/bonus_1roue.png"/>
+            </Rectangle.Fill>
+        </Rectangle>
 
     </Canvas>
 </Window>

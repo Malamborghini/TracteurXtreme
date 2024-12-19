@@ -36,22 +36,23 @@ namespace TracteurXtreme
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
         int secondes = 0;
+
         public bool uneSeulefois = true,
                     jeuEnPause = false,
                     jeuTermine = false,
                     intersectionBonusRoue = true,
                     intersectionBonusDiesel = true,
                     gagne = false,
-                    montrerMsgBox = true;
+                    montrerMsgBox = true,
+                    modeTriche = false;
+
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
         long tempsEcouleTotal;
         public long tempsDerniereImageChangee = 0;
         public int changerImageTracteurRouge = 0, nbToucheLigneArrive = 0;
-
-        Rectangle bonusDiesel, bonusUneRoue, bonusDesRoues, bonusCollecteChamps;
-        ImageBrush bonusRoueImg, bonusDesRouesImg, bonusDieselImg, bonusChampsImg, backgroundLabelGo;
+        ImageBrush backgroundLabelGo;
 
         private Storyboard? adversaireStoryboard;
         public BitmapImage Rose { get; set; }
@@ -135,15 +136,6 @@ namespace TracteurXtreme
             tracteurRougeDroite = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/droite/tracteurRouge_droite.png"));
             tracteurRougeHaut = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/haut/tracteurRouge_haut.png"));
             tracteurRougeBas = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/bas/tracteurRouge_bas.png"));
-
-            //bonusRoueImg = new ImageBrush();
-            //bonusDesRouesImg = new ImageBrush();
-            //bonusDieselImg = new ImageBrush();
-            //bonusChampsImg = new ImageBrush();
-            //bonusRoueImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_1roue.png"));
-            //bonusDesRouesImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_desRoues.png"));
-            //bonusDieselImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_diesel.png"));
-            //bonusChampsImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_champs.png"));
         }
         private void InitDecor()
         {
@@ -226,26 +218,6 @@ namespace TracteurXtreme
         }
         private void gestionBonus()
         {
-            //bonusUneRoue = new Rectangle();
-            //bonusUneRoue.Width = 50;
-            //bonusUneRoue.Height = 40;
-            //bonusUneRoue.Fill = bonusRoueImg;
-            //bonusUneRoue.Name = "rectBonusUneRoue";
-            //bonusUneRoue.Tag = "bonus";
-            //canvasPiste.Children.Add(bonusUneRoue);
-            //Canvas.SetTop(bonusUneRoue, canvasPiste.ActualHeight / 1.2);
-            //Canvas.SetLeft(bonusUneRoue, canvasPiste.ActualWidth / 5.5);
-
-            //bonusDiesel = new Rectangle();
-            //bonusDiesel.Width = 50;
-            //bonusDiesel.Height = 50;
-            //bonusDiesel.Fill = bonusDieselImg;
-            //bonusDiesel.Name = "rectBonusDiesel";
-            //bonusDiesel.Tag = "bonus";
-            //canvasPiste.Children.Add(bonusDiesel);
-            //Canvas.SetTop(bonusDiesel, canvasPiste.ActualHeight / 17);
-            //Canvas.SetLeft(bonusDiesel, canvasPiste.ActualWidth / 2);
-
             Canvas.SetTop(rectBonusUneRoue, canvasPiste.ActualHeight / 1.2);
             Canvas.SetLeft(rectBonusUneRoue, canvasPiste.ActualWidth / 5.5);
 
@@ -270,10 +242,7 @@ namespace TracteurXtreme
                     if (tracteurHitbox.IntersectsWith(bonusHitBox) && x.Visibility == Visibility.Visible)
                     {
                         x.Visibility = Visibility.Hidden;
-                        if (tempsEcouleTotal < tempsEcouleTotal + 3000)
-                        {
-                            vitesseTracteurJoueur += 5;
-                        }
+                        vitesseTracteurJoueur += 5;
                     }
                 }
             }
@@ -326,6 +295,11 @@ namespace TracteurXtreme
             {
                 CommencerJeu();
             }
+
+            if (!jeuTermine && e.Key == Key.T)
+            {
+                modeTriche = true;
+            }
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
@@ -339,8 +313,11 @@ namespace TracteurXtreme
             bool estSurLeCircuit = EstSurLeCircuit(tabCircuit, canvasPiste.ActualWidth, canvasPiste.ActualHeight, tracteurXPixel, tracteurYPixel);
             if (estSurLeCircuit == false)
             {
-                vitesseTracteurJoueur = 1;
-                Console.WriteLine("vitesse réduit");
+                if (!modeTriche)
+                {
+                    vitesseTracteurJoueur = 1;
+                    Console.WriteLine("vitesse réduit");
+                }
             }
             //met le tracteur au bon endroit au demarrage
             if (uneSeulefois)
@@ -822,6 +799,7 @@ namespace TracteurXtreme
             gagne = false;
             jeuEnPause = false;
             jeuTermine = false;
+            modeTriche = false;
 
             InitTimer();
             uneSeulefois = true;
@@ -835,11 +813,6 @@ namespace TracteurXtreme
             intersectionBonusRoue = true;
             rectBonusDiesel.Visibility = Visibility.Hidden;
             rectBonusUneRoue.Visibility = Visibility.Hidden;
-
-            //if (jeuTermine)
-            //{
-                
-            //}
         }
         private void InitMusique()
         {

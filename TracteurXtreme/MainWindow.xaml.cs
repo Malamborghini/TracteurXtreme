@@ -70,6 +70,8 @@ namespace TracteurXtreme
         DateTime dernierTempsAdversaire = DateTime.MinValue; // La dernière fois que le trateur a franchi la ligne d'arrivée
         const int rechargementAdversaire = 1000; // Cooldown en milliseconds (1 second)
 
+        private static MediaPlayer musique;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,6 +80,7 @@ namespace TracteurXtreme
             menuPrincipal = new MenuPrincipal();
             menuPrincipal.ShowDialog();
             InitTimer();
+            InitMusique();
 
             double taileLargeurCanvas = canvasPiste.ActualHeight; // Hauteur du Canvas
             double tailleHauteurCanvas = canvasPiste.ActualWidth; // Largeur du Canvas
@@ -812,6 +815,20 @@ namespace TracteurXtreme
                 changerImageTracteurRouge = 0;
                 nbToucheLigneArrive = 0;
             }
+        }
+        private void InitMusique()
+        {
+            musique = new MediaPlayer();
+            musique.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory +
+           "music/You_drive_me _crazy.mp3"));
+            musique.MediaEnded += RelanceMusique;
+            musique.Volume = 1;
+            musique.Play();
+        }
+        private void RelanceMusique(object? sender, EventArgs e)
+        {
+            musique.Position = TimeSpan.Zero;
+            musique.Play();
         }
     }
 }

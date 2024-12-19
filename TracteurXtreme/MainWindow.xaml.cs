@@ -36,11 +36,13 @@ namespace TracteurXtreme
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
         int secondes = 0;
-        public bool uneSeulefois = true, 
-                    jeuEnPause = false, 
+        public bool uneSeulefois = true,
+                    jeuEnPause = false,
                     jeuTermine = false,
                     intersectionBonusRoue = true,
-                    gagne = false;
+                    intersectionBonusDiesel = true,
+                    gagne = false,
+                    montrerMsgBox = true;
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
@@ -94,12 +96,16 @@ namespace TracteurXtreme
             minuterie.Tick += Jeu;
             minuterie.Start();
         }
-
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            CommencerJeu();
+            if (jeuTermine) { CommencerJeu(); }
+            else if (montrerMsgBox)
+            {
+                MessageBox.Show("Impossible de rejouer tant que la partie n'est pas terminé");
+                montrerMsgBox = false;
+            }
+            montrerMsgBox = true;
         }
-
         private void AfficherChrono()
         {
             double emplacementChrono = (canvasPiste.ActualWidth / 2);
@@ -127,14 +133,14 @@ namespace TracteurXtreme
             tracteurRougeHaut = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/haut/tracteurRouge_haut.png"));
             tracteurRougeBas = new BitmapImage(new Uri("pack://application:,,,/img/imgTracteurs/bas/tracteurRouge_bas.png"));
 
-            bonusRoueImg = new ImageBrush();
-            bonusDesRouesImg = new ImageBrush();
-            bonusDieselImg = new ImageBrush();
-            bonusChampsImg = new ImageBrush();
-            bonusRoueImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_1roue.png"));
-            bonusDesRouesImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_desRoues.png"));
-            bonusDieselImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_diesel.png"));
-            bonusChampsImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_champs.png"));
+            //bonusRoueImg = new ImageBrush();
+            //bonusDesRouesImg = new ImageBrush();
+            //bonusDieselImg = new ImageBrush();
+            //bonusChampsImg = new ImageBrush();
+            //bonusRoueImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_1roue.png"));
+            //bonusDesRouesImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_desRoues.png"));
+            //bonusDieselImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_diesel.png"));
+            //bonusChampsImg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/img/bonus/bonus_champs.png"));
         }
         private void InitDecor()
         {
@@ -239,15 +245,20 @@ namespace TracteurXtreme
 
             Canvas.SetTop(rectBonusUneRoue, canvasPiste.ActualHeight / 1.2);
             Canvas.SetLeft(rectBonusUneRoue, canvasPiste.ActualWidth / 5.5);
+
+            Canvas.SetTop(rectBonusDiesel, canvasPiste.ActualHeight / 17);
+            Canvas.SetLeft(rectBonusDiesel, canvasPiste.ActualWidth / 2);
+
             if (nbToursEffectues >= 1 && intersectionBonusRoue)
             {
                 rectBonusUneRoue.Visibility = Visibility.Visible;
                 intersectionBonusRoue = false;
             }
-            //if (nbToursEffectues >= 2)
-            //{
-            //    bonusDiesel.Visibility = Visibility.Hidden;
-            //}
+            if (nbToursEffectues >= 2 && intersectionBonusDiesel)
+            {
+                rectBonusDiesel.Visibility = Visibility.Visible;
+                intersectionBonusDiesel = false;
+            }
             foreach (var x in canvasPiste.Children.OfType<Rectangle>())
             {
                 Rect bonusHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
@@ -256,6 +267,10 @@ namespace TracteurXtreme
                     if (tracteurHitbox.IntersectsWith(bonusHitBox) && x.Visibility == Visibility.Visible)
                     {
                         x.Visibility = Visibility.Hidden;
+                        if (tempsEcouleTotal < tempsEcouleTotal + 3000)
+                        {
+                            vitesseTracteurJoueur += 5;
+                        }
                     }
                 }
             }
@@ -795,23 +810,33 @@ namespace TracteurXtreme
         }
         private void CommencerJeu()
         {
-            if (jeuTermine)
-            {
-                gauche = false;
-                droite = false;
-                haut = false;
-                bas = false;
-                gagne = false;
-                nbToursEffectues = 0;
-                jeuEnPause = false;
-                jeuTermine = false;
-                InitTimer();
-                uneSeulefois = true;
-                DeplacerTracteurAdversaire();
-                tempsDerniereImageChangee = 0;
-                changerImageTracteurRouge = 0;
-                nbToucheLigneArrive = 0;
-            }
+            gauche = false;
+            droite = false;
+            haut = false;
+            bas = false;
+
+            nbToursEffectues = 0;
+            gagne = false;
+            jeuEnPause = false;
+            jeuTermine = false;
+
+            InitTimer();
+            uneSeulefois = true;
+            DeplacerTracteurAdversaire();
+
+            tempsDerniereImageChangee = 0;
+            changerImageTracteurRouge = 0;
+            nbToucheLigneArrive = 0;
+
+            intersectionBonusDiesel = true;
+            intersectionBonusRoue = true;
+            rectBonusDiesel.Visibility = Visibility.Hidden;
+            rectBonusUneRoue.Visibility = Visibility.Hidden;
+
+            //if (jeuTermine)
+            //{
+                
+            //}
         }
     }
 }

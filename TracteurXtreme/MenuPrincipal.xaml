@@ -140,7 +140,7 @@
             BorderBrush="#FF9D0F0F"
             BorderThickness="5"
             CornerRadius="15"
-            Visibility="Collapsed">
+            Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Width="350" Height="140">
             <TextBlock x:Name="txtblockRegles" Text="   Règles du jeu : &#10;&#10;   C'est une course entre tracteurs." />
         </Border>
 

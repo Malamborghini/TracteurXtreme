@@ -93,6 +93,11 @@
                 <ImageBrush ImageSource="/img/bonus/bonus_1roue.png"/>
             </Rectangle.Fill>
         </Rectangle>
+        <Rectangle x:Name="rectBonusDiesel" Height="35" Canvas.Left="598" Canvas.Top="27" Width="40" Visibility="Hidden" Tag="bonus" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/img/bonus/bonus_diesel.png"/>
+            </Rectangle.Fill>
+        </Rectangle>
 
     </Canvas>
 </Window>

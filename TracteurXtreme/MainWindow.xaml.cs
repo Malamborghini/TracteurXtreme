@@ -38,7 +38,6 @@ namespace TracteurXtreme
         public DispatcherTimer minuterie;
         public Stopwatch chronometre;
         public TimeSpan tempsEcoule;
-        int secondes = 0;
 
         public bool uneSeulefois = true,
                     jeuEnPause = false,
@@ -57,12 +56,9 @@ namespace TracteurXtreme
         public long tempsDerniereImageChangee = 0;
         public int changerImageTracteurRouge = 0, nbToucheLigneArrive = 0;
         ImageBrush backgroundLabelGo;
-
         private Storyboard? adversaireStoryboard;
-        public BitmapImage Rose { get; set; }
-        public BitmapImage Feu { get; set; }
-        public BitmapImage Ferme { get; set; }
-        public BitmapImage Aquatique { get; set; }
+
+        public BitmapImage Rose, Feu, Ferme, Aquatique;
         public static string ChoixDecor {  get; set; }
 
         // Variables pour comter les tours effectues et cooldown

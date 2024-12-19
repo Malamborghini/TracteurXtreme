@@ -63,13 +63,13 @@ namespace TracteurXtreme
 
         // Variables pour comter les tours effectues et cooldown
         int nbToursEffectues = 0; // Compte combien de fois la ligne d'arrivée est franchie
-        bool ligneArriveCooldown = false; // Cooldown drapeau
+        bool ligneArriveCooldown = false; // Cooldown ligne arrive
         DateTime dernierTempsTraverse = DateTime.MinValue; // La dernière fois que le trateur a franchi la ligne d'arrivée
         const int seuilRechargement = 1000; // Cooldown en milliseconds (1 second)
 
         // Variables pour comter les tours effectues et cooldown adversaire
         int nbToursAdversaire = 0; // Compte combien de fois la ligne d'arrivée est franchie
-        bool adversaireArriveCooldown = false; // Cooldown drapeau
+        bool adversaireArriveCooldown = false; // Cooldown ligne arrive
         DateTime dernierTempsAdversaire = DateTime.MinValue; // La dernière fois que le trateur a franchi la ligne d'arrivée
         const int rechargementAdversaire = 1000; // Cooldown en milliseconds (1 second)
 
@@ -186,7 +186,6 @@ namespace TracteurXtreme
                 double posInitY = (canvasPiste.ActualHeight - rectLigneArrive.Height) - (canvasPiste.ActualHeight / 2.2);
                 Canvas.SetLeft(rectLigneArrive, posInitX);
                 Canvas.SetTop(rectLigneArrive, posInitY);
-                //rectLigneArrive.Height = canvasPiste.ActualHeight / 10;
                 rectLigneArrive.Width = canvasPiste.ActualWidth / 9;
 
                 FinirCourse();
@@ -214,9 +213,9 @@ namespace TracteurXtreme
                     vitesseTracteurJoueur = 3;
                     break;
             }
-            gestionBonus();
+            GestionBonus();
         }
-        private void gestionBonus()
+        private void GestionBonus()
         {
             Canvas.SetTop(rectBonusUneRoue, canvasPiste.ActualHeight / 1.2);
             Canvas.SetLeft(rectBonusUneRoue, canvasPiste.ActualWidth / 5.5);

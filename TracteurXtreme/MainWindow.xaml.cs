@@ -23,8 +23,11 @@ namespace TracteurXtreme
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static readonly int COMPTEUR_VITESSE = 300;
+
         public int vitesseTracteurJoueur = 4;
         public double vitesseTracteurAdversaire = 2 ; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
+        public int modePuissantCompteur = COMPTEUR_VITESSE;
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut,
                                    tracteurRougeDroite, tracteurRougeGauche, tracteurRougeBas, tracteurRougeHaut;
@@ -44,7 +47,8 @@ namespace TracteurXtreme
                     intersectionBonusDiesel = true,
                     gagne = false,
                     montrerMsgBox = true,
-                    modeTriche = false;
+                    modeTriche = false,
+                    modePuissant = false;
 
         public double tracteurXPixel;
         public double tracteurYPixel;
@@ -214,6 +218,17 @@ namespace TracteurXtreme
                     break;
             }
             GestionBonus();
+            int tmpVitesseJoueur = vitesseTracteurJoueur;
+            if (modePuissant == true)
+            {
+                vitesseTracteurJoueur = vitesseTracteurJoueur+5;
+                modePuissantCompteur -= 1;
+                if (modePuissantCompteur < 1)
+                {
+                    vitesseTracteurJoueur = tmpVitesseJoueur;
+                    modePuissant = false;
+                }
+            }
         }
         private void GestionBonus()
         {
@@ -241,8 +256,8 @@ namespace TracteurXtreme
                     if (tracteurHitbox.IntersectsWith(bonusHitBox) && x.Visibility == Visibility.Visible)
                     {
                         x.Visibility = Visibility.Hidden;
-                        vitesseTracteurJoueur += 5;
-                        Console.WriteLine("ma vitesse " + vitesseTracteurJoueur);
+                        modePuissant = true;
+                        modePuissantCompteur = COMPTEUR_VITESSE;
                     }
                 }
             }
@@ -507,11 +522,15 @@ namespace TracteurXtreme
                 {
                     Storyboard.SetTarget(animations[i], rectTracteurRouge);
                     Storyboard.SetTargetProperty(animations[i], new PropertyPath("(Canvas.Top)"));
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                 }
                 else
                 {
                     Storyboard.SetTarget(animations[i], rectTracteurRouge);
                     Storyboard.SetTargetProperty(animations[i], new PropertyPath("(Canvas.Left)"));
+                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
                 }
             }
 
@@ -532,64 +551,64 @@ namespace TracteurXtreme
             {
                 case 1:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     if (chronometre.ElapsedMilliseconds - tempsDerniereImageChangee >= 2000)
                     {
                         imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
-                        rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
-                        rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                        //rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                        //rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
                     }
                     break;
                 case 2:
                     imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
                 case 3:
                     imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
                     break;
                 case 4:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
                 case 5:
                     imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
                     break;
                 case 6:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
                 case 7:
                     imgFillTracteurRouge.ImageSource = tracteurRougeDroite;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
                     break;
                 case 8:
                     imgFillTracteurRouge.ImageSource = tracteurRougeHaut;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
                 case 9:
                     imgFillTracteurRouge.ImageSource = tracteurRougeGauche;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 18;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 28;
                     break;
                 case 10:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
                 case 11:
                     imgFillTracteurRouge.ImageSource = tracteurRougeBas;
-                    rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
-                    rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
+                    //rectTracteurRouge.Height = canvasPiste.ActualHeight / 15;
+                    //rectTracteurRouge.Width = canvasPiste.ActualWidth / 35;
                     break;
             }
             changerImageTracteurRouge++;
@@ -663,32 +682,6 @@ namespace TracteurXtreme
                     ligneArriveCooldown = false;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
-
-            // le joueur perd
-            //if (adversaireHitbox.IntersectsWith(ligneArriveHitbox) && !ligneArriveCooldown && !gagne) // verifier collision et cooldown
-            //{
-            //    // Activer cooldown
-            //    adversaireArriveCooldown = true;
-            //    dernierTempsAdversaire = DateTime.Now;
-
-            //    // Incrementer le compteur de tours
-            //    nbToursAdversaire++;
-
-            //    // Check tour final
-            //    if (nbToursAdversaire == 3)
-            //    {
-            //        gagne = false;
-            //        jeuTermine = true;
-            //        MessageBox.Show("Boohoo tu as perdu !");
-            //        nbToursAdversaire = 0; // reinitisaliser pour rejouer
-            //    }
-
-            //    // Cooldown reset (asynchronous delay to avoid blocking UI thread)
-            //    Task.Delay(rechargementAdversaire).ContinueWith(_ =>
-            //    {
-            //        adversaireArriveCooldown = false;
-            //    }, TaskScheduler.FromCurrentSynchronizationContext());
-            //}
         }
         // Charger le fihcier en tableau 2D
         public static void ChargementTableau()
@@ -763,24 +756,11 @@ namespace TracteurXtreme
         }
         private void FinirCourse()
         {
-            //bool uneFois = true;
-            //if (tempsEcouleTotal >= 25000 && tracteurHitbox.IntersectsWith(ligneArriveHitbox) && uneFois)
-            //{
-            //    gagne = true;
-            //    jeuTermine = true;
-            //    minuterie.Stop();
-            //    chronometre.Stop();
-            //    MessageBox.Show("Vous avez gagne");
-            //    uneFois = false;
-            //    adversaireStoryboard.Stop();
-            //}
-
             if (tempsEcouleTotal >= 48000 && tempsEcouleTotal <= 48100 && !gagne)
             {
                 MessageBox.Show("Vous avez perdu");
                 jeuTermine = true;
             }
-
             if (jeuTermine)
             {
                 minuterie.Stop();
@@ -800,10 +780,13 @@ namespace TracteurXtreme
             jeuEnPause = false;
             jeuTermine = false;
             modeTriche = false;
+            modePuissant = false;
+            modePuissantCompteur = COMPTEUR_VITESSE;
 
             InitTimer();
             uneSeulefois = true;
             DeplacerTracteurAdversaire();
+            labPauseJeu.Content = "";
 
             tempsDerniereImageChangee = 0;
             changerImageTracteurRouge = 0;
@@ -817,8 +800,7 @@ namespace TracteurXtreme
         private void InitMusique()
         {
             musique = new MediaPlayer();
-            musique.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory +
-           "music/You_drive_me _crazy.mp3"));
+            musique.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + "music/You_drive_me _crazy.mp3"));
             musique.MediaEnded += RelanceMusique;
             musique.Volume = 1;
             musique.Play();

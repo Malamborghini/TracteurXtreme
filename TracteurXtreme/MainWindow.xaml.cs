@@ -23,7 +23,7 @@ namespace TracteurXtreme
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static readonly int COMPTEUR_VITESSE = 300;
+        public static readonly int COMPTEUR_VITESSE = 250;
 
         public int vitesseTracteurJoueur = 4;
         public double vitesseTracteurAdversaire = 2 ; //plus c'est elevee plus c'est lent, plus c'est petit plus c'est rapide
@@ -31,9 +31,11 @@ namespace TracteurXtreme
         public static bool gauche, droite, haut, bas;
         private static BitmapImage tracteurGauche, tracteurDroite, tracteurBas, tracteurHaut,
                                    tracteurRougeDroite, tracteurRougeGauche, tracteurRougeBas, tracteurRougeHaut;
+
         public Rect tracteurHitbox;
         public Rect adversaireHitbox;
         public Rect ligneArriveHitbox;
+
         public MenuPrincipal menuPrincipal;
         public DispatcherTimer minuterie;
         public Stopwatch chronometre;
@@ -44,6 +46,8 @@ namespace TracteurXtreme
                     jeuTermine = false,
                     intersectionBonusRoue = true,
                     intersectionBonusDiesel = true,
+                    intersectionBonusChamps = true,
+                    intersectionBonusDesRoues = true,
                     gagne = false,
                     montrerMsgBox = true,
                     modeTriche = false,
@@ -52,26 +56,19 @@ namespace TracteurXtreme
         public double tracteurXPixel;
         public double tracteurYPixel;
         static int[,] tabCircuit;
-        long tempsEcouleTotal;
+        public long tempsEcouleTotal;
         public long tempsDerniereImageChangee = 0;
         public int changerImageTracteurRouge = 0, nbToucheLigneArrive = 0;
         ImageBrush backgroundLabelGo;
         private Storyboard? adversaireStoryboard;
-
         public BitmapImage Rose, Feu, Ferme, Aquatique;
         public static string ChoixDecor {  get; set; }
 
-        // Variables pour comter les tours effectues et cooldown
+        // Variables pour compter les tours effectues et cooldown
         int nbToursEffectues = 0; // Compte combien de fois la ligne d'arrivée est franchie
         bool ligneArriveCooldown = false; // Cooldown ligne arrive
         DateTime dernierTempsTraverse = DateTime.MinValue; // La dernière fois que le trateur a franchi la ligne d'arrivée
         const int seuilRechargement = 1000; // Cooldown en milliseconds (1 second)
-
-        // Variables pour comter les tours effectues et cooldown adversaire
-        int nbToursAdversaire = 0; // Compte combien de fois la ligne d'arrivée est franchie
-        bool adversaireArriveCooldown = false; // Cooldown ligne arrive
-        DateTime dernierTempsAdversaire = DateTime.MinValue; // La dernière fois que le trateur a franchi la ligne d'arrivée
-        const int rechargementAdversaire = 1000; // Cooldown en milliseconds (1 second)
 
         private static MediaPlayer musique;
 
@@ -206,7 +203,6 @@ namespace TracteurXtreme
                 case "cbNiveauFerme":
                     canvasPiste.Background = new ImageBrush(Ferme);
                     vitesseTracteurJoueur = 5;
-
                     break;
                 case "cbNiveauAquatique":
                     canvasPiste.Background = new ImageBrush(Aquatique);
@@ -217,7 +213,7 @@ namespace TracteurXtreme
             int tmpVitesseJoueur = vitesseTracteurJoueur;
             if (modePuissant == true)
             {
-                vitesseTracteurJoueur = vitesseTracteurJoueur+5;
+                vitesseTracteurJoueur = vitesseTracteurJoueur+6;
                 modePuissantCompteur -= 1;
                 if (modePuissantCompteur < 1)
                 {
@@ -229,21 +225,49 @@ namespace TracteurXtreme
         private void GestionBonus()
         {
             Canvas.SetTop(rectBonusUneRoue, canvasPiste.ActualHeight / 1.2);
-            Canvas.SetLeft(rectBonusUneRoue, canvasPiste.ActualWidth / 5.5);
+            Canvas.SetLeft(rectBonusUneRoue, canvasPiste.ActualWidth / 4);
+            rectBonusUneRoue.Width = canvasPiste.ActualWidth/27;
+            rectBonusUneRoue.Height = canvasPiste.ActualHeight/24;
 
             Canvas.SetTop(rectBonusDiesel, canvasPiste.ActualHeight / 17);
             Canvas.SetLeft(rectBonusDiesel, canvasPiste.ActualWidth / 2);
+            rectBonusDiesel.Width = canvasPiste.ActualWidth / 28;
+            rectBonusDiesel.Height = canvasPiste.ActualHeight / 20;
+
+            Canvas.SetTop(rectBonusChamps, canvasPiste.ActualHeight / 1.4);
+            Canvas.SetLeft(rectBonusChamps, canvasPiste.ActualWidth / 10.1);
+            rectBonusChamps.Width = canvasPiste.ActualWidth / 24;
+            rectBonusChamps.Height = canvasPiste.ActualHeight / 27.4;
+
+            Canvas.SetTop(rectBonusDesRoues, canvasPiste.ActualHeight / 2.15);
+            Canvas.SetLeft(rectBonusDesRoues, canvasPiste.ActualWidth / 1.1);
+            rectBonusDesRoues.Width = canvasPiste.ActualWidth / 20;
+            rectBonusDesRoues.Height = canvasPiste.ActualHeight / 17.5;
 
             if (nbToursEffectues >= 1 && intersectionBonusRoue)
             {
                 rectBonusUneRoue.Visibility = Visibility.Visible;
                 intersectionBonusRoue = false;
             }
+            if (nbToursEffectues >= 1 && intersectionBonusDesRoues)
+            {
+                rectBonusDesRoues.Visibility = Visibility.Visible;
+                intersectionBonusDesRoues = false;
+            }
             if (nbToursEffectues >= 2 && intersectionBonusDiesel)
             {
                 rectBonusDiesel.Visibility = Visibility.Visible;
                 intersectionBonusDiesel = false;
+
+                rectBonusChamps.Visibility = Visibility.Visible;
+                intersectionBonusChamps = false;
             }
+            if (nbToursEffectues >= 2 && intersectionBonusChamps)
+            {
+                rectBonusChamps.Visibility = Visibility.Visible;
+                intersectionBonusChamps = false;
+            }
+
             foreach (var x in canvasPiste.Children.OfType<Rectangle>())
             {
                 Rect bonusHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
@@ -258,7 +282,7 @@ namespace TracteurXtreme
                 }
             }
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonRetour_Click(object sender, RoutedEventArgs e)
         {
             menuPrincipal.ShowDialog();
             jeuEnPause = true;
@@ -790,6 +814,10 @@ namespace TracteurXtreme
 
             intersectionBonusDiesel = true;
             intersectionBonusRoue = true;
+            intersectionBonusChamps = true;
+            intersectionBonusDesRoues = true;
+            rectBonusChamps.Visibility = Visibility.Hidden;
+            rectBonusDesRoues.Visibility = Visibility.Hidden;
             rectBonusDiesel.Visibility = Visibility.Hidden;
             rectBonusUneRoue.Visibility = Visibility.Hidden;
         }

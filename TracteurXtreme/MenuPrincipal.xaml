@@ -77,7 +77,7 @@
                 Grid.Column="1"
                 Margin="10,10,30,10"
                 Click="butRegles_Click"
-                Content=" Regles du Jeu "
+                Content=" Règles du Jeu "
                 FontFamily="Broadway"
                 FontSize="20"
                 Foreground="White">
@@ -139,8 +139,8 @@
             BorderBrush="#FF9D0F0F"
             BorderThickness="5"
             CornerRadius="15"
-            Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="300">
-            <TextBlock x:Name="txtblockRegles" Text="   Règles du jeu : &#10;&#10;   C'est une course entre tracteurs. Le joueur controle le tracteur noir. Le but est de faire &#10;   deux tours autour de la piste plus rapidement que le tracteur rouge. &#10;&#10;   Il est possible de mettre le jeu en pause avec la touche P. &#10;&#10;   Pour fermer cette page appuyez encore une fois sur Le boutton Règles du jeu." />
+            Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="500" Height="300" Margin="0,0,0,50">
+            <TextBlock x:Name="txtblockRegles" Text="&#10;   Règles du jeu : &#10;&#10;   C'est une course entre tracteurs. Le joueur controle le tracteur noir. Le but est de faire &#10;   deux tours autour de la piste plus rapidement que le tracteur rouge. &#10;&#10;   Des bonus apparaiteront sur la piste à des moments différents, ces derniers &#10;   augementeront la vitesse du joueur pour une durée limitée. &#10;&#10;   Il est possible de mettre le jeu en pause avec la touche P. &#10;&#10;   Il est deconseillé de redimensionner ou de changer de niveau au millieu de la course, &#10;   mais une fois la course terminé, il est tout à fait possible de changer de niveau et/ou &#10;   redimensionner la fenetre. &#10;&#10;   Pour fermer cette page appuyez encore une fois sur Le boutton Règles du jeu." FontFamily="Bernard MT Condensed" FontSize="14" />
         </Border>
 
     </Grid>

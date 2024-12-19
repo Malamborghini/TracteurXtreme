@@ -111,4 +111,10 @@
     <Resource Include="img\tracteur_vert.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="music\You_drive_me _crazy.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

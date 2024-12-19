@@ -73,7 +73,7 @@
             </Label.Effect>
         </Label>
         <Label x:Name="labChrono" Content="00:00.000" Canvas.Left="443" Background="#FFDEB5B5" FontSize="14" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="Bold"/>
-        <Rectangle x:Name="rectLigneArrive" Height="20" Canvas.Left="21" Stroke="Black" Canvas.Top="272" Width="141" Fill="#66000000" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Rectangle x:Name="rectLigneArrive" Height="20" Canvas.Left="21" Canvas.Top="272" Width="141" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Label x:Name="labDepart" Content="" Canvas.Left="391" Canvas.Top="191" FontSize="100" Foreground="#FFAA0000" Width="300" Height="150" FontFamily="Forte" FontWeight="Bold" Background="{x:Null}"/>
         <Button Content="Rejouer (R)" Canvas.Left="19" Canvas.Top="41" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Width="120" Height="25" Click="Button_Click_1">
             <Button.Background>

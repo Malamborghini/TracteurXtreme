@@ -242,6 +242,7 @@ namespace TracteurXtreme
                     {
                         x.Visibility = Visibility.Hidden;
                         vitesseTracteurJoueur += 5;
+                        Console.WriteLine("ma vitesse " + vitesseTracteurJoueur);
                     }
                 }
             }

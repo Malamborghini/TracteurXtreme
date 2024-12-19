@@ -134,14 +134,13 @@
         <Border
             x:Name="borderRegles"
             Grid.ColumnSpan="3"
-            Margin="300,220,300,10"
             Padding="5"
             Background="AntiqueWhite"
             BorderBrush="#FF9D0F0F"
             BorderThickness="5"
             CornerRadius="15"
-            Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Width="350" Height="140">
-            <TextBlock x:Name="txtblockRegles" Text="   Règles du jeu : &#10;&#10;   C'est une course entre tracteurs." />
+            Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="300">
+            <TextBlock x:Name="txtblockRegles" Text="   Règles du jeu : &#10;&#10;   C'est une course entre tracteurs. Le joueur controle le tracteur noir. Le but est de faire &#10;   deux tours autour de la piste plus rapidement que le tracteur rouge. &#10;&#10;   Il est possible de mettre le jeu en pause avec la touche P. &#10;&#10;   Pour fermer cette page appuyez encore une fois sur Le boutton Règles du jeu." />
         </Border>
 
     </Grid>
